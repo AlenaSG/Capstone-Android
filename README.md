@@ -9,7 +9,7 @@ The user will be able to enter their events, sort them and add them to their cal
 ## Screenshot
 <img src="https://github.com/AlenaSG/Capstone-Android/blob/master/screenshots/main.png" alt="Mainpage" width= "200px"/>
 
-## Absolute minimum features the project requiresfor an MVP
+## Absolute minimum features the project requires for an MVP
 - Login the user in and out
 - Saving events in database
 - Sorting events by date and month
