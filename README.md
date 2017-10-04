@@ -1,4 +1,4 @@
-# Capstone-Android/KidsAndMe
+# Capstone-Android/KidsAndMe - In Progress
 by Alena Golovina, September 2017
 
 ## DESCRIPTION
