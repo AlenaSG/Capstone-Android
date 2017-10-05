@@ -17,6 +17,8 @@ import android.graphics.Typeface;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mAppNameTextView;
+    private Button mCreateEventButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,8 +27,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         mAppNameTextView = (TextView) findViewById(R.id.appNameTextView);
+        mCreateEventButton = (Button) findViewById(R.id.createEventButton);
+
+
         Typeface ostrichFont = Typeface.createFromAsset(getAssets(), "fonts/satisfy.ttf");
         mAppNameTextView.setTypeface(ostrichFont);
-    }
+
+        mCreateEventButton. setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Hi Mom!", Toast.LENGTH_LONG).show();
+            }
+        });
+    }// end of onCreate()
+
+
 }
 
