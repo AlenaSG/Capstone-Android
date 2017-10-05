@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
         mCreateEventButton. setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Hi Mom!", Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, "Fill out the form and hit save!", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(MainActivity.this, CreateEventActivity.class);
+                startActivity(intent);
             }
         });
     }// end of onCreate()
