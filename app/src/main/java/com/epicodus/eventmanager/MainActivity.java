@@ -17,8 +17,10 @@ import android.graphics.Typeface;
 public class MainActivity extends AppCompatActivity {
 
     private TextView mAppNameTextView;
-    private Button mCreateEventButton;
+    private Button mBtnCreateEvent;
+    private Button mBtnFindEvent;
 
+    private static final String TAG = "MainActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,18 +29,29 @@ public class MainActivity extends AppCompatActivity {
 
 
         mAppNameTextView = (TextView) findViewById(R.id.appNameTextView);
-        mCreateEventButton = (Button) findViewById(R.id.createEventButton);
+        mBtnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);
+        mBtnFindEvent = (Button) findViewById(R.id.btnFindEvent);
+
 
 
         Typeface ostrichFont = Typeface.createFromAsset(getAssets(), "fonts/satisfy.ttf");
         mAppNameTextView.setTypeface(ostrichFont);
 
-        mCreateEventButton. setOnClickListener(new View.OnClickListener() {
+        mBtnCreateEvent. setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(MainActivity.this, "Fill out the form and hit save!", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(MainActivity.this, CreateEventActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        mBtnFindEvent. setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this, "Find your event in calendar", Toast.LENGTH_LONG).show();
+                Intent intentF = new Intent(MainActivity.this, FindEventActivity.class);
+                startActivity(intentF);
             }
         });
     }// end of onCreate()
