@@ -46,7 +46,7 @@ public class FindEventActivity extends AppCompatActivity {
 
                 DatePickerDialog dialog = new DatePickerDialog(
                         FindEventActivity.this,
-                        android.R.style.Theme_Material_Dialog_NoActionBar_MinWidth,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         mDateSetListener,
                         theYear,theMonth,theDay);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
