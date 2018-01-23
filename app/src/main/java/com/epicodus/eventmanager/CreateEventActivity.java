@@ -8,10 +8,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class CreateEventActivity extends AppCompatActivity {
 
     private EditText mCreateEventEditText;
     private Button mSaveEventButton;
+    private FirebaseDatabase database;
+
 
 
     @Override
@@ -19,6 +24,9 @@ public class CreateEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
+
+        // Write a message to the database
+        database = FirebaseDatabase.getInstance();
 
         mCreateEventEditText = (EditText) findViewById(R.id. createEventEditText);
 
@@ -28,6 +36,10 @@ public class CreateEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String description = mCreateEventEditText.getText().toString();
+                DatabaseReference myRef = database.getReference("event");
+
+                myRef.setValue(description);
+
                 Toast.makeText(CreateEventActivity.this, description + " saved", Toast.LENGTH_LONG).show();
             }
         });
