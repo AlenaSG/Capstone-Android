@@ -24,16 +24,24 @@
         android:id="@+id/btnSaveEvent"
         android:background="@color/primary_light"
         android:textColor="@color/colorPrimary"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_below="@+id/etCreateEvent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="45dp" />
 
     <Spinner
         android:id="@+id/spnSelectType"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/etCreateEvent"
-        android:layout_marginTop="105dp"
         android:entries="@array/types"
         android:scrollbarSize="80dp"/>
+
+    <ListView
+        android:id="@+id/lvEvents"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/btnSaveEvent"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="68dp" />
 </RelativeLayout>

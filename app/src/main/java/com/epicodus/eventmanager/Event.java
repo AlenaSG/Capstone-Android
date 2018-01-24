@@ -2,7 +2,7 @@ package com.epicodus.eventmanager;
 
 public class Event {
     private String eventID;
-    private String name;
+    private String description;
     private String type;
 //    private String date;
 //    private String time;
@@ -15,10 +15,10 @@ public class Event {
 
     }
 
-    public Event(String eventID, String name, String type) {
+    public Event(String eventID, String description, String type) {
         //(String name, String date, String time, String address, String link, String imageURL, String category)
         this.eventID = eventID;
-        this.name = name;
+        this.description = description;
         this.type = type;
 //        this.date = date;
 //        this.time = time;
@@ -35,12 +35,12 @@ public class Event {
     public void setEventID(String eventID) {
         this.eventID = eventID;
     }
-    public String getName() {
-        return name;
+    public String getDescription() {
+        return description;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getType() {

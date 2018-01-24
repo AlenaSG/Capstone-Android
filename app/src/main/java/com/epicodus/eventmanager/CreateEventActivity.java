@@ -5,13 +5,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CreateEventActivity extends AppCompatActivity {
 
@@ -21,8 +29,9 @@ public class CreateEventActivity extends AppCompatActivity {
     private Spinner mSelectTypeSpn;
     //private FirebaseDatabase database;
 
+    ListView lvEvents;
+    List<Event> eventList;
     DatabaseReference databaseEvents;
-
 
 
     @Override
@@ -37,6 +46,9 @@ public class CreateEventActivity extends AppCompatActivity {
 
         mCreateEventET = (EditText) findViewById(R.id. etCreateEvent);
         mSelectTypeSpn = (Spinner) findViewById(R.id.spnSelectType);
+        lvEvents = (ListView) findViewById(R.id.lvEvents);
+
+        eventList = new ArrayList<>();
 
         mSaveEventBtn = (Button) findViewById(R.id. btnSaveEvent);
         mSaveEventBtn.setOnClickListener(new View. OnClickListener() {
@@ -49,6 +61,33 @@ public class CreateEventActivity extends AppCompatActivity {
         });
 
     }// end of onCreate()
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        databaseEvents.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                eventList.clear();
+
+                for(DataSnapshot eventSnapshot : dataSnapshot.getChildren()){
+                    Event event = eventSnapshot.getValue(Event.class);
+
+                    eventList.add(event);
+                }
+
+                EventList adapter = new EventList(CreateEventActivity.this, eventList);
+                lvEvents.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     private void AddEvent() {
         String description = mCreateEventET.getText().toString().trim();
