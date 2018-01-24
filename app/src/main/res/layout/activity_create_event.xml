@@ -9,7 +9,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/createEventEditText"
+        android:id="@+id/etCreateEvent"
         android:background="@color/icons"
         android:padding="5dp"
         android:hint="Event Description"
@@ -21,9 +21,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="save event"
-        android:id="@+id/saveEvent"
+        android:id="@+id/btnSaveEvent"
         android:background="@color/primary_light"
         android:textColor="@color/colorPrimary"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:id="@+id/spnSelectType"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/etCreateEvent"
+        android:layout_marginTop="105dp"
+        android:entries="@array/types"
+        android:scrollbarSize="80dp"/>
 </RelativeLayout>

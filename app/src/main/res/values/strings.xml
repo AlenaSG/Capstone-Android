@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">EventManager</string>
+
+    <array name="types">
+        <item>Birthday</item>
+        <item>Concert</item>
+        <item>Class</item>
+    </array>
 </resources>
