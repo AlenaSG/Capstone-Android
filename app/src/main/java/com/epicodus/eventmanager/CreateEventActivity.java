@@ -24,7 +24,7 @@ import java.util.List;
 public class CreateEventActivity extends AppCompatActivity {
 
     //define view objects
-    private EditText mCreateEventET;
+    private EditText mDescriptionET;
     private Button mSaveEventBtn;
     private Spinner mSelectTypeSpn;
     //private FirebaseDatabase database;
@@ -44,7 +44,7 @@ public class CreateEventActivity extends AppCompatActivity {
         //database = FirebaseDatabase.getInstance();
 
 
-        mCreateEventET = (EditText) findViewById(R.id. etCreateEvent);
+        mDescriptionET = (EditText) findViewById(R.id. etDescription);
         mSelectTypeSpn = (Spinner) findViewById(R.id.spnSelectType);
         lvEvents = (ListView) findViewById(R.id.lvEvents);
 
@@ -90,7 +90,7 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     private void AddEvent() {
-        String description = mCreateEventET.getText().toString().trim();
+        String description = mDescriptionET.getText().toString().trim();
         String type = mSelectTypeSpn.getSelectedItem().toString();
 
         if(!TextUtils.isEmpty(description)) {
