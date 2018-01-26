@@ -1,15 +1,18 @@
 package com.epicodus.eventmanager;
 
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -58,7 +61,6 @@ public class CreateEventActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 AddEvent();
-                //Toast.makeText(CreateEventActivity.this, "event is saved", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -76,6 +78,15 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
+       lvEvents.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+           @Override
+           public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+               Event event = eventList.get(i);
+
+               showUpdateDialog(event.getEventID(), event.getDescription());
+               return false;
+           }
+       });
     }// end of onCreate()
 
     @Override
@@ -105,13 +116,59 @@ public class CreateEventActivity extends AppCompatActivity {
         });
     }
 
+    private void showUpdateDialog(final String eventID, String eventDescription){
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = getLayoutInflater();
+        final View dialogView = inflater.inflate(R.layout.update_dialog, null);
+
+        dialogBuilder.setView(dialogView);
+
+        final EditText etName = (EditText) dialogView.findViewById(R.id.etNewName);
+        final Button btnUpdate = (Button) dialogView.findViewById(R.id.btnUpdate);
+        final Spinner spnUpdate = (Spinner) dialogView.findViewById(R.id.spnUpdate);
+
+        dialogBuilder.setTitle("Update Event " + eventDescription);
+
+        final AlertDialog alertDialog = dialogBuilder.create();
+        alertDialog.show();
+
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String description = etName.getText().toString().trim();
+                String type = spnUpdate.getSelectedItem().toString();
+
+                if(TextUtils.isEmpty(description)){
+                    etName.setError("Description Required");
+                    return;
+                }
+                updateEvent(eventID, description, type);
+
+                alertDialog.dismiss();
+            }
+        });
+
+
+    }
+
+    private boolean updateEvent(String id, String description, String type){
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("events").child(id);
+
+        Event event = new Event(id, description, type);
+
+        databaseReference.setValue(event);
+        Toast.makeText(this, "Event updated successfully", Toast.LENGTH_LONG).show();
+
+        return true;
+    }
+
     private void AddEvent() {
         String description = mDescriptionET.getText().toString().trim();
         String type = mSelectTypeSpn.getSelectedItem().toString();
 
         if(!TextUtils.isEmpty(description)) {
 
-            //will store it in database
             String id = databaseEvents.push().getKey();
             Event event = new Event(id, description, type);
             databaseEvents.child(id).setValue(event);
@@ -121,8 +178,6 @@ public class CreateEventActivity extends AppCompatActivity {
         } else {
             Toast.makeText(CreateEventActivity.this, "enter description", Toast.LENGTH_LONG).show();
         }
-        //DatabaseReference myRef = database.getReference("event");
 
-        //myRef.push().setValue(description);
     }
 }
