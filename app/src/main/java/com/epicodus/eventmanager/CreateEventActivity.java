@@ -1,13 +1,11 @@
 package com.epicodus.eventmanager;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -69,7 +67,7 @@ public class CreateEventActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Event event = eventList.get(i);
 
-                Intent intent = new Intent(getApplicationContext(), AddRaitingActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AddRatingActivity.class);
 
                 intent.putExtra(EVENT_ID, event.getEventID());
                 intent.putExtra(EVENT_NAME, event.getDescription());

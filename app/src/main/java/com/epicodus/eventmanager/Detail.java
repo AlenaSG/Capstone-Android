@@ -7,16 +7,16 @@ package com.epicodus.eventmanager;
 public class Detail {
     private String detailID;
     private String detailText;
-    private int eventRaiting;
+    private int eventRating;
 
     public Detail() {
 
     }
 
-    public Detail(String detailID, String detailText, int eventRaiting) {
+    public Detail(String detailID, String detailText, int eventRating) {
         this.detailID = detailID;
         this.detailText = detailText;
-        this.eventRaiting = eventRaiting;
+        this.eventRating = eventRating;
     }
 
     public String getDetailID() {
@@ -27,7 +27,7 @@ public class Detail {
         return detailText;
     }
 
-    public int getEventRaiting() {
-        return eventRaiting;
+    public int getEventRating() {
+        return eventRating;
     }
 }

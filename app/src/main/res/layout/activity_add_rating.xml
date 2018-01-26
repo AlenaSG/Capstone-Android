@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.epicodus.eventmanager.AddRaitingActivity"
+    tools:context="com.epicodus.eventmanager.AddRatingActivity"
     android:background="@color/secondary_text"
     android:orientation="vertical"
     android:paddingBottom="10dp"
@@ -27,14 +27,14 @@
     <SeekBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sbRaiting"
+        android:id="@+id/sbRating"
         android:max="5"/>
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="save raiting"
-        android:id="@+id/btnSaveRaiting"
+        android:text="save rating"
+        android:id="@+id/btnSaveRating"
         android:background="@color/primary_light"
         android:textColor="@color/colorPrimary" />
 
