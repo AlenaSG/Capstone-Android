@@ -1,10 +1,12 @@
 package com.epicodus.eventmanager;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +25,8 @@ import java.util.List;
 
 public class CreateEventActivity extends AppCompatActivity {
 
+    public static final String EVENT_NAME = "eventname";
+    public static final String EVENT_ID = "eventid";
     //define view objects
     private EditText mDescriptionET;
     private Button mSaveEventBtn;
@@ -57,6 +61,20 @@ public class CreateEventActivity extends AppCompatActivity {
 
                 AddEvent();
                 //Toast.makeText(CreateEventActivity.this, "event is saved", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        lvEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Event event = eventList.get(i);
+
+                Intent intent = new Intent(getApplicationContext(), AddRaitingActivity.class);
+
+                intent.putExtra(EVENT_ID, event.getEventID());
+                intent.putExtra(EVENT_NAME, event.getDescription());
+
+                startActivity(intent);
             }
         });
 
