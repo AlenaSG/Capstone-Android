@@ -126,6 +126,7 @@ public class CreateEventActivity extends AppCompatActivity {
         final EditText etName = (EditText) dialogView.findViewById(R.id.etNewName);
         final Button btnUpdate = (Button) dialogView.findViewById(R.id.btnUpdate);
         final Spinner spnUpdate = (Spinner) dialogView.findViewById(R.id.spnUpdate);
+        final Button btnDelete = (Button) dialogView.findViewById(R.id.btnDelete);
 
         dialogBuilder.setTitle("Update Event " + eventDescription);
 
@@ -149,7 +150,24 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
+        btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteEvent(eventID);
+                alertDialog.dismiss();
+            }
 
+        });
+    }
+
+    private void deleteEvent(String eventID) {
+        DatabaseReference drEvent = FirebaseDatabase.getInstance().getReference("events").child(eventID);
+        DatabaseReference drDetails = FirebaseDatabase.getInstance().getReference("details").child(eventID);
+
+        drEvent.removeValue();
+        drDetails.removeValue();
+
+        Toast.makeText(this, "Event is deleted", Toast.LENGTH_LONG).show();
     }
 
     private boolean updateEvent(String id, String description, String type){
