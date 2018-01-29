@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +22,7 @@ public class SignInEmailActivity extends AppCompatActivity {
     private Button mBtnLogIn;
     private EditText mEmailField;
     private EditText mPasswordField;
+    private TextView tvRegister;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
@@ -37,6 +39,7 @@ public class SignInEmailActivity extends AppCompatActivity {
         mEmailField = (EditText) findViewById(R.id.emailField);
         mPasswordField = (EditText) findViewById(R.id.passwordField);
         mBtnLogIn = (Button) findViewById(R.id.btnLogIn);
+        tvRegister = (TextView) findViewById(R.id.tvRegister);
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -53,6 +56,16 @@ public class SignInEmailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 startSignIn();
 
+            }
+        });
+
+        tvRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SignInEmailActivity.this, CreateAccountActivity.class);
+                startActivity(intent);
+                //finish() will destroy SignInEmailActivity
+                finish();
             }
         });
     }
