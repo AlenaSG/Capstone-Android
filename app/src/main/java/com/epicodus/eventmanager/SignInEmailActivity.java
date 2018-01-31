@@ -62,8 +62,8 @@ public class SignInEmailActivity extends AppCompatActivity {
         tvRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SignInEmailActivity.this, CreateAccountActivity.class);
-                startActivity(intent);
+                Intent intentA = new Intent(SignInEmailActivity.this, CreateAccountActivity.class);
+                startActivity(intentA);
                 //finish() will destroy SignInEmailActivity
                 finish();
             }

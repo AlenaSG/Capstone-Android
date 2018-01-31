@@ -93,11 +93,12 @@ public class CreateAccountActivity extends AppCompatActivity {
     private void createAuthStateListener() {
         mAuthListener = new FirebaseAuth.AuthStateListener(){
             @Override
-            public void onAuthStateChanged(FirebaseAuth firebaseAuth){
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth){
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
-                    Intent intent = new Intent(CreateAccountActivity.this, MainActivity.class);
-                    startActivity(intent);
+                    Intent intentZ = new Intent(CreateAccountActivity.this, MainActivity.class);
+                    startActivity(intentZ);
+                    intentZ.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     finish();
                 }
             }
