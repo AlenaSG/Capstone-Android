@@ -1,5 +1,6 @@
 package com.epicodus.eventmanager;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +29,9 @@ public class CreateAccountActivity extends AppCompatActivity {
     private EditText mPasswordEditText;
     private EditText mConfirmPasswordEditText;
     private TextView mLoginTextView;
+    private ProgressBar mProgressBar;
+
+    private ProgressDialog mAuthProgressDialog;
 
     private static final String TAG = "CreateAccountActivity";
 
@@ -44,10 +49,11 @@ public class CreateAccountActivity extends AppCompatActivity {
         mPasswordEditText = (EditText) findViewById(R.id.passwordEditText);
         mConfirmPasswordEditText = (EditText) findViewById(R.id.confirmPasswordEditText);
         mLoginTextView = (TextView) findViewById(R.id.loginTextView);
+        mProgressBar = (ProgressBar) findViewById(R.id.progressbar);
 
         mAuth = FirebaseAuth.getInstance();
         createAuthStateListener();
-
+        mProgressBar.setVisibility(View.INVISIBLE);//progreeees
 
         mLoginTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,6 +70,8 @@ public class CreateAccountActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //see this method below
                 createNewUser();
+
+// progressBar.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -79,11 +87,13 @@ public class CreateAccountActivity extends AppCompatActivity {
         boolean validPassword = isValidPassword(password, confirmPassword);
 
         if (!validEmail || !validName || !validPassword) return;
+        mProgressBar.setVisibility(View.VISIBLE);
 
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        mProgressBar.setVisibility(View.INVISIBLE);
                         if(task.isSuccessful()) {
                             Log.d(TAG, "onComplete: Authentication successful");
                         } else {
