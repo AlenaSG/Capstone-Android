@@ -1,5 +1,6 @@
 package com.epicodus.eventmanager;
 
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.graphics.Typeface;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     private Button mBtnFindEvent;
 
     private static final String TAG = "MainActivity";
+
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +46,19 @@ public class MainActivity extends AppCompatActivity {
         Typeface ostrichFont = Typeface.createFromAsset(getAssets(), "fonts/satisfy.ttf");
         mAppNameTextView.setTypeface(ostrichFont);
 
+        mAuth = FirebaseAuth.getInstance();
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if (user != null) {
+                    getSupportActionBar().setTitle("Welcome, " + user.getDisplayName() + "!");
+                } else{
+
+                }
+            }
+
+        };
 
         mBtnCreateEvent. setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,6 +105,20 @@ public class MainActivity extends AppCompatActivity {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
     }
 
 }
