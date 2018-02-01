@@ -47,6 +47,7 @@ public class SignInEmailActivity extends AppCompatActivity {
 
                 if(firebaseAuth.getCurrentUser() != null) {
                     startActivity(new Intent(SignInEmailActivity.this, MainActivity.class));
+                    finish();
                 }
             }
         };
@@ -77,21 +78,38 @@ public class SignInEmailActivity extends AppCompatActivity {
         mAuth.addAuthStateListener(mAuthStateListener);
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthStateListener != null) {
+            mAuth.removeAuthStateListener(mAuthStateListener);
+        }
+    }
+
     private void startSignIn() {
 
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
 
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            Toast.makeText(SignInEmailActivity.this, "Fields cannot be empty", Toast.LENGTH_LONG).show();
-        } else {
+//        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+//            Toast.makeText(SignInEmailActivity.this, "Fields cannot be blank", Toast.LENGTH_LONG).show();
+//        } else {
+        if (TextUtils.isEmpty(email)) {
+            mEmailField.setError("Please enter your email");
+            return;
+        }
+        //make these 2 checks same
+        if (password.equals("")) {
+            mPasswordField.setError("Password cannot be blank");
+            return;
+        }
 
             mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
 
                     if (!task.isSuccessful()) {
-                        Toast.makeText(SignInEmailActivity.this, "SignIn problems", Toast.LENGTH_LONG).show();
+                        Toast.makeText(SignInEmailActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -99,4 +117,3 @@ public class SignInEmailActivity extends AppCompatActivity {
 
         }
     }
-}

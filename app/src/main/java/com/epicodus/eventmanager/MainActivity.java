@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     getSupportActionBar().setTitle("Welcome, " + user.getDisplayName() + "!");
+                    // TODO: 1/31/18 fix Welcome, null message on login
+                    // - it works on returning back to the activity, but not right after creating an account
                 } else{
 
                 }
