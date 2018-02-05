@@ -4,6 +4,7 @@ public class Event {
     private String eventID;
     private String description;
     private String type;
+    private String pushID;
 //    private String date;
 //    private String time;
 //    private String address;
@@ -51,7 +52,15 @@ public class Event {
         this.type = type;
     }
 
-//    public String getDate() {
+    public String getPushID() {
+        return pushID;
+    }
+
+    public void setPushID(String pushID) {
+        this.pushID = pushID;
+    }
+
+    //    public String getDate() {
 //        return date;
 //    }
 //

@@ -103,7 +103,7 @@ public class AddRatingActivity extends AppCompatActivity {
             Detail detail = new Detail(id, detailText, rating);
 
             databaseRatings.child(id).setValue(detail);
-            Toast.makeText(this, "details saved successfully", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Details saved successfully", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "Details should not be empty", Toast.LENGTH_LONG).show();
         }

@@ -108,7 +108,7 @@
         android:layout_height="wrap_content"
         android:text="Create Account"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="30dp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:layout_above="@+id/linearLayout"
         android:layout_centerHorizontal="true" />

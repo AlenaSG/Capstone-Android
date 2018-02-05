@@ -84,7 +84,7 @@ public class CreateEventActivity extends AppCompatActivity {
                Event event = eventList.get(i);
 
                showUpdateDialog(event.getEventID(), event.getDescription());
-               return false;
+               return true;
            }
        });
     }// end of onCreate()

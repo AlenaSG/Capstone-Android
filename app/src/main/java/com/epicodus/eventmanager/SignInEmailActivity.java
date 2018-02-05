@@ -19,6 +19,8 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SignInEmailActivity extends AppCompatActivity {
 
+    // TODO: add progress bar 
+
     private Button mBtnLogIn;
     private EditText mEmailField;
     private EditText mPasswordField;
@@ -46,7 +48,9 @@ public class SignInEmailActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
 
                 if(firebaseAuth.getCurrentUser() != null) {
-                    startActivity(new Intent(SignInEmailActivity.this, MainActivity.class));
+                    Intent intent = new Intent(SignInEmailActivity.this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
                     finish();
                 }
             }
