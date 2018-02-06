@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +28,9 @@ import java.util.List;
 
 public class CreateEventActivity extends AppCompatActivity {
 
+    private RecyclerView mRecyclerView;
+    private EventListAdapter mAdapter;
+
     public static final String EVENT_NAME = "eventname";
     public static final String EVENT_ID = "eventid";
     //define view objects
@@ -34,8 +39,10 @@ public class CreateEventActivity extends AppCompatActivity {
     private Spinner mSelectTypeSpn;
     //private FirebaseDatabase database;
 
-    ListView lvEvents;
-    List<Event> eventList;
+    //ListView lvEvents;
+   // List<Event> eventList;
+    public ArrayList<Event> events = new ArrayList<>();
+
     DatabaseReference databaseEvents;
 
 
@@ -51,11 +58,24 @@ public class CreateEventActivity extends AppCompatActivity {
 
         mDescriptionET = (EditText) findViewById(R.id. etDescription);
         mSelectTypeSpn = (Spinner) findViewById(R.id.spnSelectType);
-        lvEvents = (ListView) findViewById(R.id.lvEvents);
+        //lvEvents = (ListView) findViewById(R.id.lvEvents);
 
-        eventList = new ArrayList<>();
+        //eventList = new ArrayList<>();
 
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mSaveEventBtn = (Button) findViewById(R.id. btnSaveEvent);
+
+
+
+        mAdapter = new EventListAdapter(getApplicationContext(), events);
+        mRecyclerView.setAdapter(mAdapter);
+        RecyclerView.LayoutManager layoutManager =
+                new LinearLayoutManager(CreateEventActivity.this);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setHasFixedSize(true);
+
+
         mSaveEventBtn.setOnClickListener(new View. OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,30 +84,34 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
-        lvEvents.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Event event = eventList.get(i);
-
-                Intent intent = new Intent(getApplicationContext(), AddRatingActivity.class);
-
-                intent.putExtra(EVENT_ID, event.getEventID());
-                intent.putExtra(EVENT_NAME, event.getDescription());
-
-                startActivity(intent);
-            }
-        });
-
-       lvEvents.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-           @Override
-           public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-               Event event = eventList.get(i);
-
-               showUpdateDialog(event.getEventID(), event.getDescription());
-               return true;
-           }
-       });
+//        mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                Event event = events.get(i);
+//
+//                Intent intent = new Intent(getApplicationContext(), AddRatingActivity.class);
+//
+//                intent.putExtra(EVENT_ID, event.getEventID());
+//                intent.putExtra(EVENT_NAME, event.getDescription());
+//
+//                startActivity(intent);
+//            }
+//        });
+//
+//       mRecyclerView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+//           @Override
+//           public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+//               Event event = events.get(i);
+//
+//               showUpdateDialog(event.getEventID(), event.getDescription());
+//               return true;
+//           }
+//       });
     }// end of onCreate()
+
+    //inside
+    // public View onCreateView(layoutInflater)
+    //https://www.youtube.com/watch?v=Wq2o4EbM74k
 
     @Override
     protected void onStart() {
@@ -97,16 +121,16 @@ public class CreateEventActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                eventList.clear();
+                events.clear();
 
                 for(DataSnapshot eventSnapshot : dataSnapshot.getChildren()){
                     Event event = eventSnapshot.getValue(Event.class);
 
-                    eventList.add(event);
+                    events.add(event);
                 }
 
-                EventList adapter = new EventList(CreateEventActivity.this, eventList);
-                lvEvents.setAdapter(adapter);
+                EventList adapter = new EventList(CreateEventActivity.this, events);
+                mRecyclerView.setAdapter(mAdapter);
             }
 
             @Override
