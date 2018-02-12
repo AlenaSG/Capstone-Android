@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -26,6 +27,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.epicodus.eventmanager.R.id.recyclerView;
+
 public class CreateEventActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
@@ -41,6 +44,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
     //ListView lvEvents;
    // List<Event> eventList;
+    ///??? should the list be private?
     public ArrayList<Event> events = new ArrayList<>();
 
     DatabaseReference databaseEvents;
@@ -63,7 +67,7 @@ public class CreateEventActivity extends AppCompatActivity {
         //eventList = new ArrayList<>();
 
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        mRecyclerView = (RecyclerView) findViewById(recyclerView);
         mSaveEventBtn = (Button) findViewById(R.id. btnSaveEvent);
 
 
@@ -84,34 +88,34 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
-//        mRecyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Event event = events.get(i);
-//
-//                Intent intent = new Intent(getApplicationContext(), AddRatingActivity.class);
-//
-//                intent.putExtra(EVENT_ID, event.getEventID());
-//                intent.putExtra(EVENT_NAME, event.getDescription());
-//
-//                startActivity(intent);
-//            }
-//        });
-//
-//       mRecyclerView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//           @Override
-//           public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-//               Event event = events.get(i);
-//
-//               showUpdateDialog(event.getEventID(), event.getDescription());
-//               return true;
-//           }
-//       });
-    }// end of onCreate()
 
-    //inside
-    // public View onCreateView(layoutInflater)
-    //https://www.youtube.com/watch?v=Wq2o4EbM74k
+        ////from Stack overflow https://stackoverflow.com/questions/41200876/how-to-set-onitemclicklistener-for-recyclerview
+        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerView, new RecyclerTouchListener.ClickListener() {
+            @Override
+        public void onClick(View view, int position) {
+
+
+            Toast.makeText(CreateEventActivity.this, position + "item id selected", Toast.LENGTH_SHORT).show();
+
+                Event event = events.get(position);
+
+                Intent intent = new Intent(getApplicationContext(), AddRatingActivity.class);
+
+                intent.putExtra(EVENT_ID, event.getEventID());
+                intent.putExtra(EVENT_NAME, event.getDescription());
+
+                startActivity(intent);
+        }
+
+        @Override
+        public void onLongClick(View view, int position) {
+            Event event = events.get(position);
+
+               showUpdateDialog(event.getEventID(), event.getDescription());
+            Toast.makeText(CreateEventActivity.this, "long click", Toast.LENGTH_SHORT).show();
+        }
+    }));
+    }// end of onCreate()
 
     @Override
     protected void onStart() {

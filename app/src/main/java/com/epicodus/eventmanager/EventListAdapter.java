@@ -36,7 +36,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     public int getItemCount() {
         return mEvents.size();
     }
-    public class EventViewHolder extends RecyclerView.ViewHolder {
+    public class EventViewHolder extends RecyclerView.ViewHolder{
         private ImageView mEventImageView;
         private TextView mNameTextView;
         private TextView mTypeTextView;
@@ -57,5 +57,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             mNameTextView.setText(event.getDescription());
             mTypeTextView.setText(event.getType());
         }
+
     }
 }
