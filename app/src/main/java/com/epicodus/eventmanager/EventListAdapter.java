@@ -40,6 +40,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         private ImageView mEventImageView;
         private TextView mNameTextView;
         private TextView mTypeTextView;
+        private TextView mDateTextView;
+        private TextView mTimeTextView;
+        private TextView mAddressTextView;
+
 
 
         private Context mContext;
@@ -49,13 +53,19 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             mEventImageView = (ImageView) itemView.findViewById(R.id.eventImageView);
             mNameTextView = (TextView) itemView.findViewById(R.id.eventNameTextView);
             mTypeTextView = (TextView) itemView.findViewById(R.id.typeTextView);
+            mDateTextView = (TextView) itemView.findViewById(R.id.dateTextView);
+            mTimeTextView = (TextView) itemView.findViewById(R.id.timeTextView);
+            mAddressTextView = (TextView) itemView.findViewById(R.id.addressTextView);
 
             mContext = itemView.getContext();
         }
 
         public void bindEvent(Event event) {
-            mNameTextView.setText(event.getDescription());
+            mNameTextView.setText(event.getName());
             mTypeTextView.setText(event.getType());
+            mDateTextView.setText(event.getDate());
+            mTimeTextView.setText(event.getTime());
+            mAddressTextView.setText(event.getAddress());
         }
 
     }

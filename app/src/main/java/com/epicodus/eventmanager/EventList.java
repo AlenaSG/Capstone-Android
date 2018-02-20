@@ -31,13 +31,19 @@ public class EventList extends ArrayAdapter<Event> {
 
         View listViewItem = inflater.inflate(R.layout.list_layout, null, true);
 
-        TextView tvDescription = (TextView) listViewItem.findViewById(R.id.tvDescription);
+        TextView tvName = (TextView) listViewItem.findViewById(R.id.tvName);
         TextView tvType = (TextView) listViewItem.findViewById(R.id.tvType);
+        TextView tvDate = (TextView) listViewItem.findViewById(R.id.tvDate);
+        TextView tvTime = (TextView) listViewItem.findViewById(R.id.tvTime);
+        TextView tvAddress = (TextView) listViewItem.findViewById(R.id.tvAddress);
 
         Event event = eventList.get(position);
 
-        tvDescription.setText(event.getDescription());
+        tvName.setText(event.getName());
         tvType.setText(event.getType());
+        tvDate.setText(event.getDate());
+        tvTime.setText(event.getTime());
+        tvAddress.setText(event.getAddress());
 
         return listViewItem;
 

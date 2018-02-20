@@ -37,7 +37,10 @@ public class CreateEventActivity extends AppCompatActivity {
     public static final String EVENT_NAME = "eventname";
     public static final String EVENT_ID = "eventid";
     //define view objects
-    private EditText mDescriptionET;
+    private EditText mNameET;
+    private EditText mDateET;
+    private EditText mTimeET;
+    private EditText mAddressET;
     private Button mSaveEventBtn;
     private Spinner mSelectTypeSpn;
     //private FirebaseDatabase database;
@@ -60,7 +63,10 @@ public class CreateEventActivity extends AppCompatActivity {
         //database = FirebaseDatabase.getInstance();
 
 
-        mDescriptionET = (EditText) findViewById(R.id. etDescription);
+        mNameET = (EditText) findViewById(R.id. etName);
+        mDateET = (EditText) findViewById(R.id. etDate);
+        mTimeET = (EditText) findViewById(R.id. etTime);
+        mAddressET = (EditText) findViewById(R.id. etAddress);
         mSelectTypeSpn = (Spinner) findViewById(R.id.spnSelectType);
         //lvEvents = (ListView) findViewById(R.id.lvEvents);
 
@@ -102,7 +108,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), AddRatingActivity.class);
 
                 intent.putExtra(EVENT_ID, event.getEventID());
-                intent.putExtra(EVENT_NAME, event.getDescription());
+                intent.putExtra(EVENT_NAME, event.getName());
 
                 startActivity(intent);
         }
@@ -111,7 +117,7 @@ public class CreateEventActivity extends AppCompatActivity {
         public void onLongClick(View view, int position) {
             Event event = events.get(position);
 
-               showUpdateDialog(event.getEventID(), event.getDescription());
+               showUpdateDialog(event.getEventID(), event.getName());
             Toast.makeText(CreateEventActivity.this, "long click", Toast.LENGTH_SHORT).show();
         }
     }));
@@ -144,7 +150,7 @@ public class CreateEventActivity extends AppCompatActivity {
         });
     }
 
-    private void showUpdateDialog(final String eventID, String eventDescription){
+    private void showUpdateDialog(final String eventID, String eventName){
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(this);
         LayoutInflater inflater = getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.update_dialog, null);
@@ -152,11 +158,14 @@ public class CreateEventActivity extends AppCompatActivity {
         dialogBuilder.setView(dialogView);
 
         final EditText etName = (EditText) dialogView.findViewById(R.id.etNewName);
+        final EditText etDate = (EditText) dialogView.findViewById(R.id.etNewDate);
+        final EditText etTime = (EditText) dialogView.findViewById(R.id.etNewTime);
+        final EditText etAddress = (EditText) dialogView.findViewById(R.id.etNewAddress);
         final Button btnUpdate = (Button) dialogView.findViewById(R.id.btnUpdate);
         final Spinner spnUpdate = (Spinner) dialogView.findViewById(R.id.spnUpdate);
         final Button btnDelete = (Button) dialogView.findViewById(R.id.btnDelete);
 
-        dialogBuilder.setTitle("Update Event " + eventDescription);
+        dialogBuilder.setTitle("Update Event " + eventName);
 
         final AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
@@ -165,14 +174,17 @@ public class CreateEventActivity extends AppCompatActivity {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String description = etName.getText().toString().trim();
+                String name = etName.getText().toString().trim();
                 String type = spnUpdate.getSelectedItem().toString();
+                String date = etDate.getText().toString().trim();
+                String time = etTime.getText().toString().trim();
+                String address = etAddress.getText().toString().trim();
 
-                if(TextUtils.isEmpty(description)){
+                if(TextUtils.isEmpty(name)){
                     etName.setError("Description Required");
                     return;
                 }
-                updateEvent(eventID, description, type);
+                updateEvent(eventID, name, type, date, time, address);
 
                 alertDialog.dismiss();
             }
@@ -198,10 +210,10 @@ public class CreateEventActivity extends AppCompatActivity {
         Toast.makeText(this, "Event is deleted", Toast.LENGTH_LONG).show();
     }
 
-    private boolean updateEvent(String id, String description, String type){
+    private boolean updateEvent(String id, String name, String type, String date, String time, String address){
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("events").child(id);
 
-        Event event = new Event(id, description, type);
+        Event event = new Event(id, name, type, date, time, address);
 
         databaseReference.setValue(event);
         Toast.makeText(this, "Event updated successfully", Toast.LENGTH_LONG).show();
@@ -210,19 +222,22 @@ public class CreateEventActivity extends AppCompatActivity {
     }
 
     private void AddEvent() {
-        String description = mDescriptionET.getText().toString().trim();
+        String description = mNameET.getText().toString().trim();
         String type = mSelectTypeSpn.getSelectedItem().toString();
+        String date = mDateET.getText().toString().trim();
+        String time = mTimeET.getText().toString().trim();
+        String address = mAddressET.getText().toString().trim();
 
         if(!TextUtils.isEmpty(description)) {
 
             String id = databaseEvents.push().getKey();
-            Event event = new Event(id, description, type);
+            Event event = new Event(id, description, type, date, time, address);
             databaseEvents.child(id).setValue(event);
 
             Toast.makeText(this, "event added", Toast.LENGTH_LONG).show();
 
         } else {
-            Toast.makeText(CreateEventActivity.this, "enter description", Toast.LENGTH_LONG).show();
+            Toast.makeText(CreateEventActivity.this, "enter name of the event", Toast.LENGTH_LONG).show();
         }
 
     }

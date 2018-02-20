@@ -5,11 +5,11 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tvDescription"
+        android:id="@+id/tvName"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Large"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="description" />
+        android:text="name" />
 
     <TextView
         android:id="@+id/tvType"
@@ -17,4 +17,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="type" />
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="date" />
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="time" />
+
+    <TextView
+        android:id="@+id/tvAddress"
+        android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="address" />
 </LinearLayout>

@@ -15,6 +15,30 @@
         android:ems="10"
         android:inputType="textPersonName"/>
 
+    <EditText
+        android:id="@+id/etNewDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter new date"
+        android:ems="10"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/etNewTime"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter new time"
+        android:ems="10"
+        android:inputType="textPersonName"/>
+
+    <EditText
+        android:id="@+id/etNewAddress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Enter new address"
+        android:ems="10"
+        android:inputType="textPersonName"/>
+
     <Spinner
         android:id="@+id/spnUpdate"
         android:layout_width="match_parent"

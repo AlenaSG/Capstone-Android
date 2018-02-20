@@ -2,29 +2,30 @@ package com.epicodus.eventmanager;
 
 public class Event {
     private String eventID;
-    private String description;
+    private String name; //was description
     private String type;
+
+    private String date;
+    private String time;
+    private String address;
+    //private String link;
     private String pushID;
-//    private String date;
-//    private String time;
-//    private String address;
-//    private String link;
-//    private String imageURL;
-//    private String category;
+    //private String imageURL;
+    //private String category;
 
     public Event(){
 
     }
 
-    public Event(String eventID, String description, String type) {
+    public Event(String eventID, String name, String type, String date, String time, String address) {
         //(String name, String date, String time, String address, String link, String imageURL, String category)
         this.eventID = eventID;
-        this.description = description;
+        this.name = name;
         this.type = type;
-//        this.date = date;
-//        this.time = time;
-//        this.address = address;
-//        this.link = link;
+        this.date = date;
+        this.time = time;
+        this.address = address;
+        //    this.link = link;
 //        this.imageURL = imageURL;
 //        this.category = category;
     }
@@ -36,12 +37,12 @@ public class Event {
     public void setEventID(String eventID) {
         this.eventID = eventID;
     }
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getType() {
@@ -52,6 +53,30 @@ public class Event {
         this.type = type;
     }
 
+        public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getPushID() {
         return pushID;
     }
@@ -59,30 +84,6 @@ public class Event {
     public void setPushID(String pushID) {
         this.pushID = pushID;
     }
-
-    //    public String getDate() {
-//        return date;
-//    }
-//
-//    public void setDate(String date) {
-//        this.date = date;
-//    }
-//
-//    public String getTime() {
-//        return time;
-//    }
-//
-//    public void setTime(String time) {
-//        this.time = time;
-//    }
-//
-//    public String getAddress() {
-//        return address;
-//    }
-//
-//    public void setAddress(String address) {
-//        this.address = address;
-//    }
 //
 //    public String getLink() {
 //        return link;

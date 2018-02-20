@@ -13,9 +13,33 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/etDescription"
+        android:id="@+id/etName"
         android:background="@color/icons"
-        android:hint="Event Description"/>
+        android:hint="Event Name"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etDate"
+        android:background="@color/icons"
+        android:hint="Event Date"
+        android:layout_below="@id/etName"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etTime"
+        android:background="@color/icons"
+        android:hint="Event Time"
+        android:layout_below="@id/etDate"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/etAddress"
+        android:background="@color/icons"
+        android:hint="Event Address"
+        android:layout_below="@id/etTime"/>
 
     <Spinner
         android:id="@+id/spnSelectType"
@@ -26,7 +50,7 @@
         android:layout_marginBottom="10dp"
         android:scrollbarSize="80dp"
         android:spinnerMode="dropdown"
-        android:layout_below="@id/etDescription"
+        android:layout_below="@id/etAddress"
        android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
 
     <Button
