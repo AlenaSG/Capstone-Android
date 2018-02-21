@@ -18,6 +18,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -58,9 +60,14 @@ public class CreateEventActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_event);
 
-        databaseEvents = FirebaseDatabase.getInstance().getReference("events");
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+
+        databaseEvents = FirebaseDatabase.getInstance().getReference("events").child(uid);
         // Write a message to the database
         //database = FirebaseDatabase.getInstance();
+
+
 
 
         mNameET = (EditText) findViewById(R.id. etName);
@@ -123,6 +130,37 @@ public class CreateEventActivity extends AppCompatActivity {
     }));
     }// end of onCreate()
 
+    private void AddEvent() {//add event to firebase
+
+        String name = mNameET.getText().toString().trim();
+        String type = mSelectTypeSpn.getSelectedItem().toString();
+        String date = mDateET.getText().toString().trim();
+        String time = mTimeET.getText().toString().trim();
+        String address = mAddressET.getText().toString().trim();
+
+        if(!TextUtils.isEmpty(name)) {
+
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            String uid = user.getUid();
+
+            DatabaseReference databaseEvents = FirebaseDatabase
+                    .getInstance()
+                    .getReference("events")
+                    .child(uid);
+
+            DatabaseReference pushRef = databaseEvents.push();
+            //String pushId = pushRef.getKey();
+            String id = databaseEvents.push().getKey();
+            Event event = new Event(id, name, type, date, time, address);
+            pushRef.setValue(event);
+
+            Toast.makeText(this, "event added", Toast.LENGTH_LONG).show();
+
+        } else {
+            Toast.makeText(CreateEventActivity.this, "enter name of the event", Toast.LENGTH_LONG).show();
+        }
+
+    }
     @Override
     protected void onStart() {
         super.onStart();
@@ -221,24 +259,5 @@ public class CreateEventActivity extends AppCompatActivity {
         return true;
     }
 
-    private void AddEvent() {
-        String description = mNameET.getText().toString().trim();
-        String type = mSelectTypeSpn.getSelectedItem().toString();
-        String date = mDateET.getText().toString().trim();
-        String time = mTimeET.getText().toString().trim();
-        String address = mAddressET.getText().toString().trim();
 
-        if(!TextUtils.isEmpty(description)) {
-
-            String id = databaseEvents.push().getKey();
-            Event event = new Event(id, description, type, date, time, address);
-            databaseEvents.child(id).setValue(event);
-
-            Toast.makeText(this, "event added", Toast.LENGTH_LONG).show();
-
-        } else {
-            Toast.makeText(CreateEventActivity.this, "enter name of the event", Toast.LENGTH_LONG).show();
-        }
-
-    }
 }
