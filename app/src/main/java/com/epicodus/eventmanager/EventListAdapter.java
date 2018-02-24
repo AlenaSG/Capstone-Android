@@ -1,12 +1,15 @@
 package com.epicodus.eventmanager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
@@ -36,15 +39,13 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     public int getItemCount() {
         return mEvents.size();
     }
-    public class EventViewHolder extends RecyclerView.ViewHolder{
+    public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mEventImageView;
         private TextView mNameTextView;
         private TextView mTypeTextView;
         private TextView mDateTextView;
         private TextView mTimeTextView;
         private TextView mAddressTextView;
-
-
 
         private Context mContext;
 
@@ -58,13 +59,23 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             mAddressTextView = (TextView) itemView.findViewById(R.id.addressTextView);
 
             mContext = itemView.getContext();
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int itemPosition = getLayoutPosition();
+            Intent intent = new Intent(mContext, EventDetailActivity.class);
+            intent.putExtra("position", itemPosition);
+            intent.putExtra("events", Parcels.wrap(mEvents));
+            mContext.startActivity(intent);
         }
 
         public void bindEvent(Event event) {
             mNameTextView.setText(event.getName());
             mTypeTextView.setText(event.getType());
             mDateTextView.setText(event.getDate());
-            mTimeTextView.setText(event.getTime());
+            mTimeTextView.setText("Starts at: " + event.getTime());
             mAddressTextView.setText(event.getAddress());
         }
 

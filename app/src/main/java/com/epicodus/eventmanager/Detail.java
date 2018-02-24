@@ -1,17 +1,14 @@
 package com.epicodus.eventmanager;
 
-/**
- * Created by alenagolovina on 1/25/18.
- */
+import org.parceler.Parcel;
 
+@Parcel
 public class Detail {
-    private String detailID;
-    private String detailText;
-    private int eventRating;
+    String detailID;
+    String detailText;
+    int eventRating;
 
-    public Detail() {
-
-    }
+    public Detail() {}
 
     public Detail(String detailID, String detailText, int eventRating) {
         this.detailID = detailID;

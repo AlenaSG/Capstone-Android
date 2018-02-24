@@ -1,24 +1,25 @@
 package com.epicodus.eventmanager;
 
+import org.parceler.Parcel;
+
+@Parcel
 public class Event {
-    private String eventID;
-    private String name; //was description
-    private String type;
+    String eventID;
+    String name; //was description
+    String type;
 
-    private String date;
-    private String time;
-    private String address;
-    //private String link;
-    private String pushID;
-    //private String imageURL;
-    //private String category;
+    String date;
+    String time;
+    String address;
+    //String link;
+    String pushID;
+    //String imageURL;
 
-    public Event(){
 
-    }
+    public Event(){}
 
     public Event(String eventID, String name, String type, String date, String time, String address) {
-        //(String name, String date, String time, String address, String link, String imageURL, String category)
+        //(String name, String date, String time, String address, String link, String imageURL)
         this.eventID = eventID;
         this.name = name;
         this.type = type;
@@ -27,7 +28,7 @@ public class Event {
         this.address = address;
         //    this.link = link;
 //        this.imageURL = imageURL;
-//        this.category = category;
+
     }
 
     public String getEventID() {
@@ -53,7 +54,7 @@ public class Event {
         this.type = type;
     }
 
-        public String getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -101,11 +102,5 @@ public class Event {
 //        this.imageURL = imageURL;
 //    }
 //
-//    public String getCategory() {
-//        return category;
-//    }
 //
-//    public void setCategory(String category) {
-//        this.category = category;
-//    }
 }

@@ -1,6 +1,7 @@
 package com.epicodus.eventmanager;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import java.util.List;
 import static com.epicodus.eventmanager.R.id.recyclerView;
 
 public class CreateEventActivity extends AppCompatActivity {
+    //private Event event;
 
     private RecyclerView mRecyclerView;
     private EventListAdapter mAdapter;
@@ -50,7 +52,7 @@ public class CreateEventActivity extends AppCompatActivity {
     //ListView lvEvents;
    // List<Event> eventList;
     ///??? should the list be private?
-    public ArrayList<Event> events = new ArrayList<>();
+    public ArrayList<Event> mEvents = new ArrayList<>();
 
     DatabaseReference databaseEvents;
 
@@ -67,9 +69,6 @@ public class CreateEventActivity extends AppCompatActivity {
         // Write a message to the database
         //database = FirebaseDatabase.getInstance();
 
-
-
-
         mNameET = (EditText) findViewById(R.id. etName);
         mDateET = (EditText) findViewById(R.id. etDate);
         mTimeET = (EditText) findViewById(R.id. etTime);
@@ -79,13 +78,11 @@ public class CreateEventActivity extends AppCompatActivity {
 
         //eventList = new ArrayList<>();
 
-
         mRecyclerView = (RecyclerView) findViewById(recyclerView);
         mSaveEventBtn = (Button) findViewById(R.id. btnSaveEvent);
 
-
-
-        mAdapter = new EventListAdapter(getApplicationContext(), events);
+        //set up adapter
+        mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
         mRecyclerView.setAdapter(mAdapter);
         RecyclerView.LayoutManager layoutManager =
                 new LinearLayoutManager(CreateEventActivity.this);
@@ -101,33 +98,40 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
+//
+//        ////from Stack overflow https://stackoverflow.com/questions/41200876/how-to-set-onitemclicklistener-for-recyclerview
+//        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerView, new RecyclerTouchListener.ClickListener() {
+//            @Override
+//        public void onClick(View view, int position) {
+//
+////// Map point based on address
+////                Event event = events.get(position);
+////                Uri location = Uri.parse("geo:0,0?q=" + event.getAddress());
+////// Or map point based on latitude/longitude
+////// Uri location = Uri.parse("geo:37.422219,-122.08364?z=14"); // z param is zoom level
+////                Intent mapIntent = new Intent(Intent.ACTION_VIEW, location);
+////                startActivity(mapIntent);
+//            Toast.makeText(CreateEventActivity.this, position + "item id selected", Toast.LENGTH_SHORT).show();
+//
+//                Event event = events.get(position);
+//
+//                Intent intent = new Intent(getApplicationContext(), AddRatingActivity.class);
+//
+//                intent.putExtra(EVENT_ID, event.getEventID());
+//                intent.putExtra(EVENT_NAME, event.getName());
+//
+//                startActivity(intent);
+//        }
+//
+//        @Override
+//        public void onLongClick(View view, int position) {
+//            Event event = events.get(position);
+//
+//               showUpdateDialog(event.getEventID(), event.getName());
+//            Toast.makeText(CreateEventActivity.this, "long click", Toast.LENGTH_SHORT).show();
+//        }
+//    }));
 
-        ////from Stack overflow https://stackoverflow.com/questions/41200876/how-to-set-onitemclicklistener-for-recyclerview
-        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-        public void onClick(View view, int position) {
-
-
-            Toast.makeText(CreateEventActivity.this, position + "item id selected", Toast.LENGTH_SHORT).show();
-
-                Event event = events.get(position);
-
-                Intent intent = new Intent(getApplicationContext(), AddRatingActivity.class);
-
-                intent.putExtra(EVENT_ID, event.getEventID());
-                intent.putExtra(EVENT_NAME, event.getName());
-
-                startActivity(intent);
-        }
-
-        @Override
-        public void onLongClick(View view, int position) {
-            Event event = events.get(position);
-
-               showUpdateDialog(event.getEventID(), event.getName());
-            Toast.makeText(CreateEventActivity.this, "long click", Toast.LENGTH_SHORT).show();
-        }
-    }));
     }// end of onCreate()
 
     private void AddEvent() {//add event to firebase
@@ -169,15 +173,15 @@ public class CreateEventActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                events.clear();
+                mEvents.clear();
 
                 for(DataSnapshot eventSnapshot : dataSnapshot.getChildren()){
                     Event event = eventSnapshot.getValue(Event.class);
 
-                    events.add(event);
+                    mEvents.add(event);
                 }
 
-                EventList adapter = new EventList(CreateEventActivity.this, events);
+                EventList adapter = new EventList(CreateEventActivity.this, mEvents);
                 mRecyclerView.setAdapter(mAdapter);
             }
 
