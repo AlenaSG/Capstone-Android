@@ -93,7 +93,6 @@ public class CreateEventActivity extends AppCompatActivity {
         mSaveEventBtn.setOnClickListener(new View. OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 AddEvent();
             }
         });
@@ -103,15 +102,6 @@ public class CreateEventActivity extends AppCompatActivity {
 //        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerView, new RecyclerTouchListener.ClickListener() {
 //            @Override
 //        public void onClick(View view, int position) {
-//
-////// Map point based on address
-////                Event event = events.get(position);
-////                Uri location = Uri.parse("geo:0,0?q=" + event.getAddress());
-////// Or map point based on latitude/longitude
-////// Uri location = Uri.parse("geo:37.422219,-122.08364?z=14"); // z param is zoom level
-////                Intent mapIntent = new Intent(Intent.ACTION_VIEW, location);
-////                startActivity(mapIntent);
-//            Toast.makeText(CreateEventActivity.this, position + "item id selected", Toast.LENGTH_SHORT).show();
 //
 //                Event event = events.get(position);
 //

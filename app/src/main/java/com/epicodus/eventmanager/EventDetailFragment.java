@@ -1,6 +1,8 @@
 package com.epicodus.eventmanager;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,7 +18,7 @@ import android.widget.TextView;
 import org.parceler.Parcels;
 
 
-public class EventDetailFragment extends Fragment {
+public class EventDetailFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "EventDetailFragment";
 
     ImageView mImageLabel;
@@ -34,10 +36,8 @@ public class EventDetailFragment extends Fragment {
     public static EventDetailFragment newInstance(Event event) {
         EventDetailFragment eventDetailFragment = new EventDetailFragment();
         Bundle args = new Bundle();
-        Log.d(TAG, "newInstance:6666666666 ");
         args.putParcelable("event", Parcels.wrap(event));
         eventDetailFragment.setArguments(args);
-        Log.d(TAG, "newInstance: 00000000: can wrap an instance of eventDetailFragment!!!!");
         return eventDetailFragment;
 
     }
@@ -46,7 +46,6 @@ public class EventDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mEvent = Parcels.unwrap(getArguments().getParcelable("event"));
-        Log.d(TAG, "onCreate1111: can unwrap an instance of eventDetailFragment!!!!");
     }
 
     @Override
@@ -73,9 +72,19 @@ public class EventDetailFragment extends Fragment {
         mAddressLabel.setText(mEvent.getAddress());
        // mRatingLabel.setText("rating");
         //mDetails.setText("details");
-        Log.d(TAG, "onCreateView222: can create instance of eventDetailFragment!!!!");
+
+        mAddressLabel.setOnClickListener(this);
+        mAddToCalendarButton.setOnClickListener(this);
 
         return view;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v == mAddressLabel) {
+            Intent mapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + mEvent.getAddress()));
+            startActivity(mapIntent);
+        }
     }
 
 }

@@ -19,18 +19,15 @@ public class EventPagerAdapter extends FragmentPagerAdapter {
     public EventPagerAdapter(FragmentManager fm, ArrayList<Event> events) {
         super(fm);
         mEvents = events;
-        Log.d(TAG, "getItem: HERE1!!");
     }
 
     @Override//returns an instance of EventDetailFragment - check this
     public Fragment getItem(int position) {
-        Log.d(TAG, "getItem: HERE2!!");
         return EventDetailFragment.newInstance(mEvents.get(position));
     }
 
     @Override
     public int getCount() {
-        Log.d(TAG, "getCount: mEvents.size is:  " + mEvents.size());
         return mEvents.size();
     }
 
