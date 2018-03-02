@@ -1,6 +1,7 @@
 package com.epicodus.eventmanager;
 
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -23,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,6 +35,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,13 +53,17 @@ public class CreateEventActivity extends AppCompatActivity {
     public static final String EVENT_ID = "eventid";
     //define view objects
     private EditText mNameET;
-    private EditText mTimeET;
+    //private EditText mTimeET;
     private EditText mAddressET;
     private Button mSaveEventBtn;
     private Spinner mSelectTypeSpn;
     private Button mSelectDateBtn;
     private TextView mTheDate;
+    private TextView mTheTime;
+    private Button mSelectTimeBtn;
+
     private DatePickerDialog.OnDateSetListener mDateSetListener;
+    private TimePickerDialog.OnTimeSetListener mTimeSetListener;
 
     public ArrayList<Event> mEvents = new ArrayList<>();
 
@@ -75,12 +82,45 @@ public class CreateEventActivity extends AppCompatActivity {
         // Write a message to the database
 
         mNameET = (EditText) findViewById(R.id. etName);
-        mTimeET = (EditText) findViewById(R.id. etTime);
         mAddressET = (EditText) findViewById(R.id. etAddress);
         mSelectTypeSpn = (Spinner) findViewById(R.id.spnSelectType);
         mSelectDateBtn = (Button) findViewById(R.id.btnSelectDate);
         mTheDate = (TextView) findViewById(R.id.theDate);
+        mTheTime = (TextView) findViewById(R.id.tvTime);
+        mSelectTimeBtn = (Button) findViewById(R.id.btnSelectTime);
 
+        mSelectTimeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar c = Calendar.getInstance();
+                int min = c.get(Calendar.MINUTE);
+                int hour = c.get(Calendar.HOUR);
+
+                TimePickerDialog dialog = new TimePickerDialog(
+                        CreateEventActivity.this,
+                        android.R.style.Theme_DeviceDefault_Dialog_MinWidth,
+                        mTimeSetListener,
+                        hour,min, true);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+
+            }
+        });
+
+        mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int min) {
+
+                Log.d(TAG, "onTimeSet: hh:mm: " + hour + ":" + min);
+
+                String timePicked = hour + ":" + min;
+                mTheTime.setText(timePicked);
+
+            }
+        };
+
+
+        ////////
 
         mSelectDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,7 +220,8 @@ public class CreateEventActivity extends AppCompatActivity {
         String name = mNameET.getText().toString().trim();
         String type = mSelectTypeSpn.getSelectedItem().toString();
         String date = mTheDate.getText().toString();
-        String time = mTimeET.getText().toString().trim();
+        //String time = mTimeET.getText().toString().trim();
+        String time = mTheTime.getText().toString();
         String address = mAddressET.getText().toString().trim();
 
         if(!TextUtils.isEmpty(name)) {

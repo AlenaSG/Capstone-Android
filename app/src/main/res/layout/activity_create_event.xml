@@ -38,15 +38,22 @@
         android:background="@color/icons"
         android:hint="chosen date"/>
 
-    <EditText
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnSelectTime"
+        android:layout_below="@id/theDate"
+        android:text="select time"/>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/etTime"
+        android:id="@+id/tvTime"
         android:background="@color/icons"
         android:hint="Event Time"
         android:elevation="10dp"
         android:layout_margin="2dp"
-        android:layout_below="@id/theDate"/>
+        android:layout_below="@id/btnSelectTime"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -54,9 +61,9 @@
         android:id="@+id/etAddress"
         android:background="@color/icons"
         android:hint="Event Address"
-        android:elevation="10dp"
         android:layout_margin="2dp"
-        android:layout_below="@id/etTime"/>
+        android:elevation="10dp"
+        android:layout_below="@+id/tvTime"/>
 
     <Spinner
         android:id="@+id/spnSelectType"
