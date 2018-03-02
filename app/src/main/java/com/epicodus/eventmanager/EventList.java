@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
-
+//to do - delete this event List
 public class EventList extends ArrayAdapter<Event> {
     private Activity context;
     private List<Event> eventList;

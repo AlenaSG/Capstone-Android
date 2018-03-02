@@ -71,18 +71,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        mBtnFindEvent. setOnClickListener(new View.OnClickListener() {
+
+        mBtnFindEvent.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "Find your event in calendar", Toast.LENGTH_LONG).show();
-                Intent intentF = new Intent(MainActivity.this, FindEventActivity.class);
-                startActivity(intentF);
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, CalendarActivity.class);
+                startActivity(intent);
             }
         });
 
-
-    }
-    // end of onCreate()
+    }// end of onCreate()
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

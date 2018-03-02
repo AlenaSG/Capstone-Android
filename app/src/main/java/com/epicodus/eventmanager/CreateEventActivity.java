@@ -1,6 +1,10 @@
 package com.epicodus.eventmanager;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.icu.util.Calendar;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -8,11 +12,13 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -30,28 +36,28 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.v7.recyclerview.R.attr.layoutManager;
 import static com.epicodus.eventmanager.R.id.recyclerView;
 
 public class CreateEventActivity extends AppCompatActivity {
-    //private Event event;
+    private static final String TAG = "CreateEventActivity";
 
     private RecyclerView mRecyclerView;
     private EventListAdapter mAdapter;
+    private LinearLayoutManager mLayoutManager;
 
     public static final String EVENT_NAME = "eventname";
     public static final String EVENT_ID = "eventid";
     //define view objects
     private EditText mNameET;
-    private EditText mDateET;
     private EditText mTimeET;
     private EditText mAddressET;
     private Button mSaveEventBtn;
     private Spinner mSelectTypeSpn;
-    //private FirebaseDatabase database;
+    private Button mSelectDateBtn;
+    private TextView mTheDate;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
 
-    //ListView lvEvents;
-   // List<Event> eventList;
-    ///??? should the list be private?
     public ArrayList<Event> mEvents = new ArrayList<>();
 
     DatabaseReference databaseEvents;
@@ -67,26 +73,71 @@ public class CreateEventActivity extends AppCompatActivity {
 
         databaseEvents = FirebaseDatabase.getInstance().getReference("events").child(uid);
         // Write a message to the database
-        //database = FirebaseDatabase.getInstance();
 
         mNameET = (EditText) findViewById(R.id. etName);
-        mDateET = (EditText) findViewById(R.id. etDate);
         mTimeET = (EditText) findViewById(R.id. etTime);
         mAddressET = (EditText) findViewById(R.id. etAddress);
         mSelectTypeSpn = (Spinner) findViewById(R.id.spnSelectType);
-        //lvEvents = (ListView) findViewById(R.id.lvEvents);
+        mSelectDateBtn = (Button) findViewById(R.id.btnSelectDate);
+        mTheDate = (TextView) findViewById(R.id.theDate);
 
-        //eventList = new ArrayList<>();
 
-        mRecyclerView = (RecyclerView) findViewById(recyclerView);
+        mSelectDateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                int theYear = cal.get(Calendar.YEAR);
+                int theMonth = cal.get(Calendar.MONTH);
+                int theDay = cal.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog dialog = new DatePickerDialog(
+                        CreateEventActivity.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        mDateSetListener,
+                        theYear,theMonth,theDay);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int theYear, int theMonth, int theDay) {
+                theMonth = theMonth + 1;
+
+                Log.d(TAG, "onDateSet: mm/dd/yyyy: " + theMonth + "/" + theDay + theYear);
+
+                String datePicked = theMonth + "/" + theDay + "/" + theYear;
+                mTheDate.setText(datePicked);
+            }
+        };
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         mSaveEventBtn = (Button) findViewById(R.id. btnSaveEvent);
 
-        //set up adapter
+
+        // Now set the properties of the LinearLayoutManager
+        mLayoutManager = new LinearLayoutManager(CreateEventActivity.this);
+        mLayoutManager.setReverseLayout(true);
+        mLayoutManager.setStackFromEnd(true);
+
+        // And now set it to the RecyclerView
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
         mRecyclerView.setAdapter(mAdapter);
-        RecyclerView.LayoutManager layoutManager =
-                new LinearLayoutManager(CreateEventActivity.this);
-        mRecyclerView.setLayoutManager(layoutManager);
+       // mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //layoutManager.setReverseLayout(true);
+
+
+
+        //set up adapter
+       // mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
+        //mRecyclerView.setAdapter(mAdapter);
+        //mRecyclerView.LayoutManager layoutManager =
+                //new LinearLayoutManager(CreateEventActivity.this);
+        //mRecyclerView.setLayoutManager(layoutManager);
+
         mRecyclerView.setHasFixedSize(true);
 
 
@@ -128,7 +179,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
         String name = mNameET.getText().toString().trim();
         String type = mSelectTypeSpn.getSelectedItem().toString();
-        String date = mDateET.getText().toString().trim();
+        String date = mTheDate.getText().toString();
         String time = mTimeET.getText().toString().trim();
         String address = mAddressET.getText().toString().trim();
 
@@ -143,7 +194,6 @@ public class CreateEventActivity extends AppCompatActivity {
                     .child(uid);
 
             DatabaseReference pushRef = databaseEvents.push();
-            //String pushId = pushRef.getKey();
             String id = databaseEvents.push().getKey();
             Event event = new Event(id, name, type, date, time, address);
             pushRef.setValue(event);
@@ -171,7 +221,9 @@ public class CreateEventActivity extends AppCompatActivity {
                     mEvents.add(event);
                 }
 
-                EventList adapter = new EventList(CreateEventActivity.this, mEvents);
+                //EventList adapter = new EventList(CreateEventActivity.this, mEvents);
+
+                //to display event immediately after creation
                 mRecyclerView.setAdapter(mAdapter);
             }
 

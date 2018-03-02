@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.provider.CalendarContract;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import org.parceler.Parcels;
 
 import java.util.Calendar;
+import java.util.Locale;
+import java.util.TimeZone;
 
 
 public class EventDetailFragment extends Fragment implements View.OnClickListener {
@@ -91,17 +95,19 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
         }
         //Note: This intent for a calendar event is supported only with API level 14 and higher.
         //https://developer.android.com/training/basics/intents/sending.html
-        if (v == mAddToCalendarButton) {
+        //https://stackoverflow.com/questions/14694931/insert-event-to-calendar-using-intent
 
+        if (v == mAddToCalendarButton) {
             Calendar beginTime = Calendar.getInstance();
-            beginTime.set(2012, 0, 19, 7, 30);
-            Calendar endTime = Calendar.getInstance();
-            endTime.set(2012, 0, 19, 8, 30);
+            beginTime.set(2018, 1, 28, 14, 30);
+            //Calendar endTime = Calendar.getInstance();
+            //endTime.set(2018, 1, 28, 8, 30);
             Intent calendarIntent = new Intent(Intent.ACTION_INSERT).setData(CalendarContract.Events.CONTENT_URI);
             calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis());
-            calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis());
-            calendarIntent.putExtra(CalendarContract.Events.TITLE, "Ninja class");
-            calendarIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, "Secret dojo");
+            //calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis());
+            calendarIntent.putExtra(CalendarContract.Events.TITLE, mEvent.getName());
+            calendarIntent.putExtra(CalendarContract.Events.EVENT_LOCATION, mEvent.getAddress());
+
             startActivity(calendarIntent);
         }
     }
