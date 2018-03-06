@@ -99,10 +99,12 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
 
         if (v == mAddToCalendarButton) {
             Calendar beginTime = Calendar.getInstance();
-            beginTime.set(2018, 1, 28, 14, 30);
+            //this data can have 01 or 1 for minutes
+            beginTime.set(2018, 1, 28, 14, 1);
             //Calendar endTime = Calendar.getInstance();
             //endTime.set(2018, 1, 28, 8, 30);
             Intent calendarIntent = new Intent(Intent.ACTION_INSERT).setData(CalendarContract.Events.CONTENT_URI);
+           // calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, mEvent.getDate());//returns todays date
             calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime.getTimeInMillis());
             //calendarIntent.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime.getTimeInMillis());
             calendarIntent.putExtra(CalendarContract.Events.TITLE, mEvent.getName());

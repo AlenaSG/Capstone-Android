@@ -1,6 +1,8 @@
 package com.epicodus.eventmanager;
 
 import android.support.annotation.NonNull;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -26,6 +28,9 @@ public class MainActivity extends AppCompatActivity {
     private Button mBtnCreateEvent;
     private Button mBtnFindEvent;
 
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+
     private static final String TAG = "MainActivity";
 
     private FirebaseAuth mAuth;
@@ -35,6 +40,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_linear);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         mAppNameTextView = (TextView) findViewById(R.id.appNameTextView);
@@ -82,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
 
     }// end of onCreate()
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -96,7 +111,11 @@ public class MainActivity extends AppCompatActivity {
             logout();
             return true;
         }
+        if (mToggle.onOptionsItemSelected(item)){
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+
     }
 
     private void logout() {
