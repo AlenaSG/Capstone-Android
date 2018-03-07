@@ -56,7 +56,6 @@ public class CreateEventActivity extends AppCompatActivity {
     public static final String EVENT_ID = "eventid";
     //define view objects
     private EditText mNameET;
-    //private EditText mTimeET;
     private EditText mAddressET;
     private Button mSaveEventBtn;
     private Spinner mSelectTypeSpn;
@@ -202,7 +201,7 @@ public class CreateEventActivity extends AppCompatActivity {
         mSaveEventBtn = (Button) findViewById(R.id. btnSaveEvent);
 
 
-        // Now set the properties of the LinearLayoutManager
+        // Set the properties of the LinearLayoutManager
         mLayoutManager = new LinearLayoutManager(CreateEventActivity.this);
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
@@ -212,17 +211,6 @@ public class CreateEventActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
         mRecyclerView.setAdapter(mAdapter);
-       // mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        //layoutManager.setReverseLayout(true);
-
-
-
-        //set up adapter
-       // mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
-        //mRecyclerView.setAdapter(mAdapter);
-        //mRecyclerView.LayoutManager layoutManager =
-                //new LinearLayoutManager(CreateEventActivity.this);
-        //mRecyclerView.setLayoutManager(layoutManager);
 
         mRecyclerView.setHasFixedSize(true);
 
@@ -268,7 +256,6 @@ public class CreateEventActivity extends AppCompatActivity {
         String date = mTheDate.getText().toString();
        // long totalMillis = dateMillis + timeMillis;
 
-        //String time = mTimeET.getText().toString().trim();
         String time = mTheTime.getText().toString();
         String address = mAddressET.getText().toString().trim();
 
