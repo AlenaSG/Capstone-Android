@@ -1,6 +1,11 @@
 package com.epicodus.eventmanager;
 
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private TextView mAppNameTextView;
     private Button mBtnCreateEvent;
@@ -44,11 +49,14 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
 
-        mDrawerLayout.addDrawerListener(mToggle);
+        mDrawerLayout.addDrawerListener(mToggle);//or setDrawerListener?
         mToggle.syncState();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+     //  actionbar.setDisplayHomeAsUpEnabled(true);
 
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         mAppNameTextView = (TextView) findViewById(R.id.appNameTextView);
         mBtnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);
@@ -95,13 +103,22 @@ public class MainActivity extends AppCompatActivity {
 
     }// end of onCreate()
 
-
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
         return super.onCreateOptionsMenu(menu);
+        //return true;
     }
 
     @Override
@@ -116,6 +133,42 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
 
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        //Handle navigation view item clicks here
+
+        Fragment fragment = null;
+
+        int id = item.getItemId();
+        if (id == R.id.nav_account){
+            fragment = new MyAccountFragment();
+            //handle the account action
+            Log.d(TAG, "onNavigationItemSelected: this is account action");
+            Toast.makeText(this, "You are inside my account", Toast.LENGTH_SHORT).show();
+        } else if (id == R.id.nav_logout) {
+            Log.d(TAG, "onNavigationItemSelected: this is logout action");
+        } else if (id == R.id.nav_settings) {
+            fragment = new SettingsFragment();
+            Log.d(TAG, "onNavigationItemSelected: this is settings action");
+            Toast.makeText(this, "You are inside settings fragment", Toast.LENGTH_SHORT).show();
+        }
+
+        if(fragment != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction ft = fragmentManager.beginTransaction();
+
+            ft.replace(R.id.screen_area, fragment);
+            //ft.commitNow();
+            ft.commit();
+        }
+
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private void logout() {

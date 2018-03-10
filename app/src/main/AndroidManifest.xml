@@ -18,13 +18,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity android:name=".CreateEventActivity" />
         <activity android:name=".CalendarActivity" />
         <activity android:name=".FindEventActivity" />
         <activity android:name=".AddRatingActivity" />
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".EventDetailActivity" />
+        <activity android:name=".WelcomeScreenActivity"></activity>
     </application>
 
 </manifest>
