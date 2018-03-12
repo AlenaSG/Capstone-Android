@@ -70,6 +70,7 @@ public class CreateEventActivity extends AppCompatActivity {
     public ArrayList<Event> mEvents = new ArrayList<>();
 
     DatabaseReference databaseEvents;
+    Calendar mChosenDate = Calendar.getInstance();;
 
 
     @Override
@@ -118,17 +119,17 @@ public class CreateEventActivity extends AppCompatActivity {
                         theYear,theMonth,theDay);
                 dialogg.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialogg.show();
-
-
-                java.util.Calendar timeTime = java.util.Calendar.getInstance();
-
-                timeTime.set(theYear, theMonth, theDay, hour, min);
-                long timeMillis = timeTime.getTimeInMillis();
-                Log.d(TAG, "onTimeSet:++++ " + timeMillis);
-
-                Date thisTime = new Date(timeMillis);
-
-                Log.d(TAG, "onClick: date +++++" + thisTime);
+//
+//
+//                java.util.Calendar timeTime = java.util.Calendar.getInstance();
+//
+//                timeTime.set(theYear, theMonth, theDay, hour, min);
+//                long timeMillis = timeTime.getTimeInMillis();
+//                Log.d(TAG, "onTimeSet:++++ " + timeMillis);
+//
+//                Date thisTime = new Date(timeMillis);
+//
+//                Log.d(TAG, "onClick: date +++++" + thisTime);
             }
 
         });
@@ -136,16 +137,9 @@ public class CreateEventActivity extends AppCompatActivity {
         mTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hour, int min) {
-                /////
-                java.util.Calendar timeTime = java.util.Calendar.getInstance();
-                timeTime.set(hour, min);
-                final long timeMillis = timeTime.getTimeInMillis();
-               // Log.d(TAG, "onTimeSet:++++ " + timeMillis);
+                mChosenDate.set(Calendar.HOUR_OF_DAY, hour);
+                mChosenDate.set(Calendar.MINUTE, min);
 
-                Date thisTime = new Date(timeMillis);
-                //////
-               // Log.d(TAG, "onTimeSet: hh:mm: " + hour + ":" + minute);
-                //Log.d(TAG, "onTimeSet: this Time++" + thisTime);
 // TODO: 3/2/18 make format - double digit ex. 02:04 not 2:4
                 String timePicked = hour + ":" + min;
                 mTheTime.setText(timePicked);
@@ -186,14 +180,15 @@ public class CreateEventActivity extends AppCompatActivity {
                 //Log.d(TAG, "onDateSet: ++ thisDate" + thisDate);
                // String dateeee = cal.getTime(dateMillis);
 
-                //////
-                theMonth = theMonth + 1;
-
                 //Log.d(TAG, "onDateSet: mm/dd/yyyy: " + theMonth + "/" + theDay + theYear);
 
-                String datePicked = theMonth + "/" + theDay + "/" + theYear;
+                String datePicked = (theMonth + 1) + "/" + theDay + "/" + theYear;
 
                 mTheDate.setText(datePicked);
+
+                mChosenDate.set(Calendar.YEAR, theYear);
+                mChosenDate.set(Calendar.MONTH, theMonth);
+                mChosenDate.set(Calendar.DAY_OF_MONTH, theDay);
             }
         };
 
@@ -271,6 +266,12 @@ public class CreateEventActivity extends AppCompatActivity {
 
             DatabaseReference pushRef = databaseEvents.push();
             String id = databaseEvents.push().getKey();
+            long millis = mChosenDate.getTimeInMillis();
+            Log.d(TAG, "AddEvent: current millis=" + millis + ", date=" + date + ", time=" + time);
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(millis);
+            Log.d(TAG, "AddEvent: parsed datetime=" + c.getTime().toString());
+
             Event event = new Event(id, name, type, date, time, address);
             pushRef.setValue(event);
 
