@@ -26,6 +26,7 @@
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".EventDetailActivity" />
         <activity android:name=".WelcomeScreenActivity"></activity>
+        <activity android:name=".TodayEventsActivity"/>
     </application>
 
 </manifest>

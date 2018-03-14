@@ -59,11 +59,15 @@ public class CalendarActivity extends AppCompatActivity {
 
                 Toast.makeText(CalendarActivity.this, "TODAY EVENTS", Toast.LENGTH_SHORT).show();
 
-                Fragment fragment = new TodayEventsFragment();
+                Intent intent = new Intent(CalendarActivity.this, TodayEventsActivity.class);
+                intent.putExtra("todayDate", mDateToday);
+                startActivity(intent);
 
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, fragment);
-                transaction.commit();
+//                Fragment fragment = new TodayEventsFragment();
+//
+//                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//                transaction.replace(R.id.fragment_container, fragment);
+//                transaction.commit();
 
             }
         });
