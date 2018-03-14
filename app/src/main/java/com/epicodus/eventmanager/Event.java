@@ -10,6 +10,7 @@ public class Event {
 
     String date;
     String time;
+    Long millis;
     String address;
     //String link;
     String pushID;
@@ -18,13 +19,14 @@ public class Event {
 
     public Event(){}
 
-    public Event(String eventID, String name, String type, String date, String time, String address) {
+    public Event(String eventID, String name, String type, String date, String time, long millis, String address) {
         //(String name, String date, String time, String address, String link, String imageURL)
         this.eventID = eventID;
         this.name = name;
         this.type = type;
         this.date = date;
         this.time = time;
+        this.millis = millis;
         this.address = address;
         //    this.link = link;
 //        this.imageURL = imageURL;
@@ -68,6 +70,14 @@ public class Event {
 
     public void setTime(String time) {
         this.time = time;
+    }
+
+    public long getMillis() {
+        return millis;
+    }
+
+    public void setMillis(long millis) {
+        this.millis = millis;
     }
 
     public String getAddress() {

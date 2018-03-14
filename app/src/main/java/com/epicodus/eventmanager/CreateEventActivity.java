@@ -174,9 +174,9 @@ public class CreateEventActivity extends AppCompatActivity {
                 /////
                 Calendar cal = Calendar.getInstance();
                 cal.set(theYear, theMonth, theDay);
-                final long dateMillis = cal.getTimeInMillis();
+               // final long dateMillis = cal.getTimeInMillis();
                // Log.d(TAG, "onClick: dateMillis +++++ " + dateMillis);
-                Date thisDate = new Date(dateMillis);
+                //Date thisDate = new Date(dateMillis);
                 //Log.d(TAG, "onDateSet: ++ thisDate" + thisDate);
                // String dateeee = cal.getTime(dateMillis);
 
@@ -272,7 +272,7 @@ public class CreateEventActivity extends AppCompatActivity {
             c.setTimeInMillis(millis);
             Log.d(TAG, "AddEvent: parsed datetime=" + c.getTime().toString());
 
-            Event event = new Event(id, name, type, date, time, address);
+            Event event = new Event(id, name, type, date, time, millis, address);
             pushRef.setValue(event);
 
             Toast.makeText(this, "event added", Toast.LENGTH_LONG).show();
@@ -332,24 +332,24 @@ public class CreateEventActivity extends AppCompatActivity {
         alertDialog.show();
 
 
-        btnUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String name = etName.getText().toString().trim();
-                String type = spnUpdate.getSelectedItem().toString();
-                String date = etDate.getText().toString().trim();
-                String time = etTime.getText().toString().trim();
-                String address = etAddress.getText().toString().trim();
-
-                if(TextUtils.isEmpty(name)){
-                    etName.setError("Description Required");
-                    return;
-                }
-                updateEvent(eventID, name, type, date, time, address);
-
-                alertDialog.dismiss();
-            }
-        });
+//        btnUpdate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                String name = etName.getText().toString().trim();
+//                String type = spnUpdate.getSelectedItem().toString();
+//                String date = etDate.getText().toString().trim();
+//                String time = etTime.getText().toString().trim();
+//                String address = etAddress.getText().toString().trim();
+//
+//                if(TextUtils.isEmpty(name)){
+//                    etName.setError("Description Required");
+//                    return;
+//                }
+//                updateEvent(eventID, name, type, date, time, millis, address);
+//
+//                alertDialog.dismiss();
+//            }
+//        });
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -371,10 +371,10 @@ public class CreateEventActivity extends AppCompatActivity {
         Toast.makeText(this, "Event is deleted", Toast.LENGTH_LONG).show();
     }
 
-    private boolean updateEvent(String id, String name, String type, String date, String time, String address){
+    private boolean updateEvent(String id, String name, String type, String date, String time, long millis, String address){
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("events").child(id);
 
-        Event event = new Event(id, name, type, date, time, address);
+        Event event = new Event(id, name, type, date, time, millis, address);
 
         databaseReference.setValue(event);
         Toast.makeText(this, "Event updated successfully", Toast.LENGTH_LONG).show();
