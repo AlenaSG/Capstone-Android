@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.EventViewHolder>{
+
     private ArrayList<Event> mEvents = new ArrayList<>();
     private Context mContext;
 
@@ -64,21 +65,24 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
             itemView.setOnClickListener(this);
         }
 
-        @Override
-        public void onClick(View v) {
-            int itemPosition = getLayoutPosition();
-            Intent intent = new Intent(mContext, EventDetailActivity.class);
-            intent.putExtra("position", itemPosition);
-            intent.putExtra("events", Parcels.wrap(mEvents));
-            mContext.startActivity(intent);
-        }
-
         public void bindEvent(Event event) {
+
+            //Picasso
             mNameTextView.setText(event.getName());
             mTypeTextView.setText(event.getType());
             mDateTextView.setText(event.getDate());
             mTimeTextView.setText("Starts at: " + event.getTime());
             mAddressTextView.setText(event.getAddress());
+        }
+
+        @Override
+        public void onClick(View v) {
+            int itemPosition = getLayoutPosition();
+
+            Intent intent = new Intent(mContext, EventDetailActivity.class);
+            intent.putExtra("position", itemPosition + "");
+            intent.putExtra("events", Parcels.wrap(mEvents));
+            mContext.startActivity(intent);
         }
 
     }

@@ -42,7 +42,7 @@ public class CalendarActivity extends AppCompatActivity {
                 Log.d(TAG, "onSelectedDayChange: mm/dd/yyyy " + date);
                 mDateToday = date;
                 Intent intent = new Intent(CalendarActivity.this, FindEventActivity.class);
-                intent.putExtra("date", date);
+                //intent.putExtra("date", date);
                 startActivity(intent);
 
             }
@@ -59,9 +59,9 @@ public class CalendarActivity extends AppCompatActivity {
 
                 Toast.makeText(CalendarActivity.this, "TODAY EVENTS", Toast.LENGTH_SHORT).show();
 
-//                Intent intent = new Intent(CalendarActivity.this, TodayEventsActivity.class);
-//                intent.putExtra("todayDate", mDateToday);
-//                startActivity(intent);
+                Intent intent = new Intent(CalendarActivity.this, TodayEventsActivity.class);
+                intent.putExtra("todayDate", mDateToday);
+                startActivity(intent);
 
 //                Fragment fragment = new TodayEventsFragment();
 //
