@@ -39,6 +39,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
     public int getItemCount() {
         return mEvents.size();
     }
+
+
     public class EventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private ImageView mEventImageView;
         private TextView mNameTextView;

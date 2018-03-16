@@ -17,69 +17,64 @@
 
             <EditText
                 android:id="@+id/nameEditText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:hint="Name"
+                android:hint="name"
                 android:nextFocusDown="@+id/passwordEditText"
-                android:padding="10dp"
+                android:ems="10"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="10dp"
-                android:textColor="@android:color/black"
                 android:textColorHint="@color/colorPrimaryDark"
                 android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/emailEditText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:hint="Email"
+                android:hint="email address"
                 android:inputType="textEmailAddress"
                 android:nextFocusDown="@+id/passwordEditText"
-                android:padding="10dp"
-                android:layout_marginBottom="10dp"
-                android:textColor="@android:color/black"
+                android:ems="10"
                 android:textColorHint="@color/colorPrimaryDark"
+                android:layout_gravity="center_horizontal"
                 android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/passwordEditText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:hint="Password"
+                android:hint="password"
+                android:layout_gravity="center_horizontal"
+                android:ems="10"
                 android:inputType="textPassword"
                 android:nextFocusDown="@+id/passwordEditText"
-                android:padding="10dp"
                 android:layout_marginBottom="10dp"
-                android:textColor="@android:color/black"
                 android:textColorHint="@color/colorPrimaryDark"
                 android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/confirmPasswordEditText"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:hint="Confirm Password"
+                android:hint="confirm password"
+                android:layout_gravity="center_horizontal"
                 android:inputType="textPassword"
                 android:nextFocusDown="@+id/passwordEditText"
-                android:padding="10dp"
+                android:ems="10"
                 android:layout_marginBottom="10dp"
-                android:textColor="@android:color/black"
                 android:textColorHint="@color/colorPrimaryDark"
                 android:textSize="20sp" />
-
 
             <Button
                 android:id="@+id/createUserButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Sign up"
+                android:text="Join the club!"
                 android:background="@color/accent"
                 android:layout_marginTop="15dp"
                 android:textColor="@color/colorPrimaryDark" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

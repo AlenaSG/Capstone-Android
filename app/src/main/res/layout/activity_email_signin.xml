@@ -13,7 +13,9 @@
         android:layout_marginTop="39dp"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:hint="email address"/>
+        android:textColorHint="@color/colorPrimaryDark"
+        android:hint="email address"
+        android:textSize="20sp"/>
 
     <EditText
         android:id="@+id/passwordField"
@@ -24,7 +26,9 @@
         android:layout_marginTop="49dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint="password"/>
+        android:textColorHint="@color/colorPrimaryDark"
+        android:hint="password"
+        android:textSize="20sp"/>
 
     <Button
         android:id="@+id/btnLogIn"
@@ -42,6 +46,8 @@
         android:textColor="@color/colorPrimaryDark"
         android:textStyle="bold"
         android:textSize="15sp"
+        android:layout_below="@+id/btnLogIn"
+        android:layout_marginTop="15dp"
         android:text="Don't have an account? Sign up here!"
         android:id="@+id/tvRegister"
         android:layout_gravity="center_horizontal"

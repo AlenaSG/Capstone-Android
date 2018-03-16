@@ -11,6 +11,7 @@ import android.provider.CalendarContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -205,7 +206,14 @@ public class CreateEventActivity extends AppCompatActivity {
 
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
+
         mRecyclerView.setAdapter(mAdapter);
+
+
+//        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+//        itemAnimator.setAddDuration(1000);
+//        itemAnimator.setRemoveDuration(1000);
+//        mRecyclerView.setItemAnimator(itemAnimator);
 
         mRecyclerView.setHasFixedSize(true);
 
@@ -242,6 +250,8 @@ public class CreateEventActivity extends AppCompatActivity {
 //        }
 //    }));
 
+
+
     }// end of onCreate()
 
     private void AddEvent() {//add event to firebase
@@ -249,7 +259,7 @@ public class CreateEventActivity extends AppCompatActivity {
         String name = mNameET.getText().toString().trim();
         String type = mSelectTypeSpn.getSelectedItem().toString();
         String date = mTheDate.getText().toString();
-       // long totalMillis = dateMillis + timeMillis;
+
 
         String time = mTheTime.getText().toString();
         String address = mAddressET.getText().toString().trim();
@@ -268,9 +278,9 @@ public class CreateEventActivity extends AppCompatActivity {
             String id = databaseEvents.push().getKey();
             long millis = mChosenDate.getTimeInMillis();
             Log.d(TAG, "AddEvent: current millis=" + millis + ", date=" + date + ", time=" + time);
-            Calendar c = Calendar.getInstance();
-            c.setTimeInMillis(millis);
-            Log.d(TAG, "AddEvent: parsed datetime=" + c.getTime().toString());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(millis);
+            Log.d(TAG, "AddEvent: parsed datetime=" + calendar.getTime().toString());
 
             Event event = new Event(id, name, type, date, time, millis, address);
             pushRef.setValue(event);
