@@ -17,9 +17,6 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-/**
- * Created by alenagolovina on 3/16/18.
- */
 
 public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
     private static final int MAX_WIDTH = 200;
@@ -59,6 +56,21 @@ public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements 
 
             nameTextView.setText(event.getName());
             typeTextView.setText(event.getType());
+
+        String birthday = "Birthday";
+        String show = "Show";
+        //word "class" is taken
+        String other = "Other";
+
+        if (typeTextView.getText().equals(birthday)) {
+            eventImageView.setImageResource(R.drawable.birthday_cupcake);
+        } else if (typeTextView.getText().equals(show)) {
+            eventImageView.setImageResource(R.drawable.show_curtains);
+        }
+        if (typeTextView.getText().equals("Class")) {
+            eventImageView.setImageResource(R.drawable.class_hands);
+        }
+
             dateTextView.setText(event.getDate());
         }
 
@@ -109,6 +121,7 @@ public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements 
     @Override
     public void onClick(View view) {
         final ArrayList<Event> events = new ArrayList<>();
+
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("events");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
 
