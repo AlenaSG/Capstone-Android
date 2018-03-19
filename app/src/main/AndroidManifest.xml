@@ -25,8 +25,9 @@
         <activity android:name=".AddRatingActivity" />
         <activity android:name=".CreateAccountActivity" />
         <activity android:name=".EventDetailActivity" />
-        <activity android:name=".WelcomeScreenActivity"></activity>
-        <activity android:name=".TodayEventsActivity"/>
+        <activity android:name=".WelcomeScreenActivity" />
+        <activity android:name=".TodayEventsActivity" />
+        <activity android:name=".util.AllFutureEventsActivity"></activity>
     </application>
 
 </manifest>

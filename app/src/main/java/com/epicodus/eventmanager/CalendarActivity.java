@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.Toast;
 
+import com.epicodus.eventmanager.util.AllFutureEventsActivity;
+
 
 public class CalendarActivity extends AppCompatActivity {
 
@@ -60,7 +62,7 @@ public class CalendarActivity extends AppCompatActivity {
                 Toast.makeText(CalendarActivity.this, "TODAY EVENTS", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(CalendarActivity.this, TodayEventsActivity.class);
-                intent.putExtra("todayDate", mDateToday);
+                //intent.putExtra("todayDate", mDateToday);
                 startActivity(intent);
 
 //                Fragment fragment = new TodayEventsFragment();
@@ -90,7 +92,10 @@ public class CalendarActivity extends AppCompatActivity {
         mAllBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(CalendarActivity.this, "ALL IN ORDER EVENTS", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CalendarActivity.this, "ALL FUTURE EVENTS", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CalendarActivity.this, AllFutureEventsActivity.class);
+                //intent.putExtra("todayDate", mDateToday);
+                startActivity(intent);
             }
         });
 

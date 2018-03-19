@@ -48,6 +48,8 @@ import java.util.Locale;
 public class TodayEventsActivity extends AppCompatActivity {
     private static final String TAG = "TodayEventsActivity";
 
+
+    private TextView mTvDateToday;
     private RecyclerView mRecyclerView;
     private EventListAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -66,8 +68,12 @@ public class TodayEventsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_today_events);
 
-
-
+        mTvDateToday = (TextView) findViewById(R.id.tvDateToday);
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat ss = new SimpleDateFormat("M/dd/yyyy");///or double M
+        Date date = new Date();
+        String currentDate = ss.format(date);
+        mTvDateToday.setText("Today is " + currentDate);
         databaseEvents = FirebaseDatabase.getInstance().getReference("events");
         // Write a message to the database
 
@@ -79,8 +85,8 @@ public class TodayEventsActivity extends AppCompatActivity {
 
         // Set the properties of the LinearLayoutManager
         mLayoutManager = new LinearLayoutManager(TodayEventsActivity.this);
-        mLayoutManager.setReverseLayout(true);
-        mLayoutManager.setStackFromEnd(true);
+       // mLayoutManager.setReverseLayout(true);
+        //mLayoutManager.setStackFromEnd(true);
 
         // And now set it to the RecyclerView
 
@@ -88,12 +94,6 @@ public class TodayEventsActivity extends AppCompatActivity {
         mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
 
         mRecyclerView.setAdapter(mAdapter);
-
-
-//        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
-//        itemAnimator.setAddDuration(1000);
-//        itemAnimator.setRemoveDuration(1000);
-//        mRecyclerView.setItemAnimator(itemAnimator);
 
         mRecyclerView.setHasFixedSize(true);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -104,10 +104,12 @@ public class TodayEventsActivity extends AppCompatActivity {
                 .getReference("events")
                 .child(uid);
 
-        Query query = FirebaseDatabase.getInstance()
-                    .getReference("events")
-                    .child(uid)
-                    .orderByChild("millis");
+       Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").equalTo(currentDate);//display todays events
+        //Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").startAt(currentDate);///to display all events - no old ones
+//        Query query = FirebaseDatabase.getInstance()
+//                    .getReference("events")
+//                    .child(uid)
+//                    .orderByChild("millis");
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -121,9 +123,6 @@ public class TodayEventsActivity extends AppCompatActivity {
                     mEvents.add(event);
                 }
 
-                //EventList adapter = new EventList(CreateEventActivity.this, mEvents);
-
-                //to display event immediately after creation
                 mRecyclerView.setAdapter(mAdapter);
             }
 
@@ -140,7 +139,7 @@ public class TodayEventsActivity extends AppCompatActivity {
 
 
 
-//////////////////////////////////////////////// working display
+//////////////////////////////////////////////// working display without Value event listener
 //public class TodayEventsActivity extends AppCompatActivity {
 //    private DatabaseReference mEventReference;
 //    private FirebaseRecyclerAdapter mFirebaseAdapter;
@@ -175,10 +174,7 @@ public class TodayEventsActivity extends AppCompatActivity {
 //                .getReference("events")
 //                .child(uid);
 //
-//        Query query = FirebaseDatabase.getInstance()
-//                    .getReference("events")
-//                    .child(uid)
-//                    .orderByChild("millis");
+//        //include query here
 //
 //        setUpFirebaseAdapter();
 //    }
