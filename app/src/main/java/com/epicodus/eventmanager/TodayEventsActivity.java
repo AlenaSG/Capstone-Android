@@ -1,15 +1,27 @@
 package com.epicodus.eventmanager;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 import android.view.LayoutInflater;
 
@@ -20,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import com.epicodus.eventmanager.EventListAdapter.EventViewHolder;
@@ -28,85 +41,187 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 
 public class TodayEventsActivity extends AppCompatActivity {
-    private DatabaseReference mEventReference;
-    private FirebaseRecyclerAdapter mFirebaseAdapter;
+    private static final String TAG = "TodayEventsActivity";
 
     private RecyclerView mRecyclerView;
-    private TextView mTvDateToday;
+    private EventListAdapter mAdapter;
+    private LinearLayoutManager mLayoutManager;
+
+    public static final String EVENT_NAME = "eventname";
+    public static final String EVENT_ID = "eventid";
+    //define view objects
 
 
-    private LinearLayoutManager mLayoutManager;//from CreateEventActivity
+    public ArrayList<Event> mEvents = new ArrayList<>();
 
-
+    DatabaseReference databaseEvents;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_today_events);
-        mTvDateToday = (TextView) findViewById(R.id.tvDateToday);
 
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat ss = new SimpleDateFormat("M/dd/yyyy");///or double M
-        Date date = new Date();
-        String currentDate = ss.format(date);
-        mTvDateToday.setText("Today is " + currentDate);
+
+
+        databaseEvents = FirebaseDatabase.getInstance().getReference("events");
+        // Write a message to the database
+
+        //http://javarevisited.blogspot.com/2012/12/how-to-convert-millisecond-to-date-in-java-example.html
+
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
 
-        mEventReference = FirebaseDatabase
-                .getInstance()
-                .getReference("events")
-                .child(uid);
-
-        setUpFirebaseAdapter();
-    }
-
-    private void setUpFirebaseAdapter() {
-        mFirebaseAdapter = new FirebaseRecyclerAdapter<Event, FirebaseEventViewHolder>(Event.class, R.layout.event_list_item_drag, FirebaseEventViewHolder.class, mEventReference) {
-
-            @Override
-            protected void populateViewHolder(FirebaseEventViewHolder viewHolder, Event model, int position) {
-                viewHolder.bindEvent(model);
-            }
-        };
-
-        //WHY doesnt it work?
-//
-//        mRecyclerView.setHasFixedSize(true);
-//        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        mRecyclerView.setAdapter(mFirebaseAdapter);
-
-/////////////code from CreateEventActivity Starts
         // Set the properties of the LinearLayoutManager
-        mLayoutManager = new LinearLayoutManager(this);
+        mLayoutManager = new LinearLayoutManager(TodayEventsActivity.this);
         mLayoutManager.setReverseLayout(true);
         mLayoutManager.setStackFromEnd(true);
 
         // And now set it to the RecyclerView
 
         mRecyclerView.setLayoutManager(mLayoutManager);
-        //no need to make new Adapter, there's one above
-       // mFirebaseAdapter = new EventListAdapter(getApplicationContext(), mEvents);//from this part in CreateEventActivity
+        mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
 
-        mRecyclerView.setAdapter(mFirebaseAdapter);
-        /////////////code from CreateEventActivity ends
-    }
+        mRecyclerView.setAdapter(mAdapter);
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mFirebaseAdapter.cleanup();
+
+//        RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
+//        itemAnimator.setAddDuration(1000);
+//        itemAnimator.setRemoveDuration(1000);
+//        mRecyclerView.setItemAnimator(itemAnimator);
+
+        mRecyclerView.setHasFixedSize(true);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+
+        DatabaseReference databaseEvents = FirebaseDatabase
+                .getInstance()
+                .getReference("events")
+                .child(uid);
+
+        Query query = FirebaseDatabase.getInstance()
+                    .getReference("events")
+                    .child(uid)
+                    .orderByChild("millis");
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mEvents.clear();
+
+                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    Event event = eventSnapshot.getValue(Event.class);
+
+                    mEvents.add(event);
+                }
+
+                //EventList adapter = new EventList(CreateEventActivity.this, mEvents);
+
+                //to display event immediately after creation
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }
 
 
- 
 
-    
+
+
+
+//////////////////////////////////////////////// working display
+//public class TodayEventsActivity extends AppCompatActivity {
+//    private DatabaseReference mEventReference;
+//    private FirebaseRecyclerAdapter mFirebaseAdapter;
+//
+//    private RecyclerView mRecyclerView;
+//    private TextView mTvDateToday;
+//
+//
+//    private LinearLayoutManager mLayoutManager;//from CreateEventActivity
+//
+//
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.fragment_today_events);
+//        mTvDateToday = (TextView) findViewById(R.id.tvDateToday);
+//
+//        Calendar calendar = Calendar.getInstance();
+//        SimpleDateFormat ss = new SimpleDateFormat("M/dd/yyyy");///or double M
+//        Date date = new Date();
+//        String currentDate = ss.format(date);
+//        mTvDateToday.setText("Today is " + currentDate);
+//
+//        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+//
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        String uid = user.getUid();
+//
+//        mEventReference = FirebaseDatabase
+//                .getInstance()
+//                .getReference("events")
+//                .child(uid);
+//
+//        Query query = FirebaseDatabase.getInstance()
+//                    .getReference("events")
+//                    .child(uid)
+//                    .orderByChild("millis");
+//
+//        setUpFirebaseAdapter();
+//    }
+//
+//    private void setUpFirebaseAdapter() {
+//        mFirebaseAdapter = new FirebaseRecyclerAdapter<Event, FirebaseEventViewHolder>(Event.class, R.layout.event_list_item_drag, FirebaseEventViewHolder.class, mEventReference) {
+//
+//            @Override
+//            protected void populateViewHolder(FirebaseEventViewHolder viewHolder, Event model, int position) {
+//                viewHolder.bindEvent(model);
+//            }
+//        };
+//
+//        //WHY doesnt it work?
+////
+////        mRecyclerView.setHasFixedSize(true);
+////        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+////        mRecyclerView.setAdapter(mFirebaseAdapter);
+//
+///////////////code from CreateEventActivity Starts
+//        // Set the properties of the LinearLayoutManager
+//        mLayoutManager = new LinearLayoutManager(this);
+//        mLayoutManager.setReverseLayout(true);
+//        mLayoutManager.setStackFromEnd(true);
+//
+//        // And now set it to the RecyclerView
+//
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//        //no need to make new Adapter, there's one above
+//       // mFirebaseAdapter = new EventListAdapter(getApplicationContext(), mEvents);//from this part in CreateEventActivity
+//
+//        mRecyclerView.setAdapter(mFirebaseAdapter);
+//        /////////////code from CreateEventActivity ends
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        mFirebaseAdapter.cleanup();
+//    }
+//}
+//
+//
+//
+//
+//

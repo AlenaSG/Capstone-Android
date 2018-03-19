@@ -71,7 +71,7 @@ public class CreateEventActivity extends AppCompatActivity {
     public ArrayList<Event> mEvents = new ArrayList<>();
 
     DatabaseReference databaseEvents;
-    Calendar mChosenDate = Calendar.getInstance();;
+    Calendar mChosenDate = Calendar.getInstance();
 
 
     @Override

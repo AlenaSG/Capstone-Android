@@ -68,8 +68,25 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.Even
         public void bindEvent(Event event) {
 
             //Picasso
+
+
             mNameTextView.setText(event.getName());
             mTypeTextView.setText(event.getType());
+
+            String birthday = "Birthday";
+            String show = "Show";
+            //word "class" is taken
+            String other = "Other";
+
+            if (mTypeTextView.getText().equals(birthday)) {
+                mEventImageView.setImageResource(R.drawable.birthday_cupcake);
+            } else if (mTypeTextView.getText().equals(show)) {
+                mEventImageView.setImageResource(R.drawable.show_curtains);
+            }
+            if (mTypeTextView.getText().equals("Class")) {
+                mEventImageView.setImageResource(R.drawable.class_hands);
+            }
+
             mDateTextView.setText(event.getDate());
             mTimeTextView.setText("Starts at: " + event.getTime());
             mAddressTextView.setText(event.getAddress());
