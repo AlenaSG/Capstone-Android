@@ -8,9 +8,16 @@
         android:layout_height="wrap_content"
         android:text="Today is this date"
         android:id="@+id/tvDateToday"
-        android:textSize="30sp"/>
-
-
+        android:textSize="25sp"
+        android:textColor="@color/colorPrimary"
+        android:textAlignment="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvHowManyEvents"
+        android:textSize="25sp"
+        android:textColor="@color/colorPrimary"
+        android:textAlignment="center"/>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

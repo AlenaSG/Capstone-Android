@@ -283,6 +283,7 @@ public class CreateEventActivity extends AppCompatActivity {
             Log.d(TAG, "AddEvent: parsed datetime=" + calendar.getTime().toString());
 
             Event event = new Event(id, name, type, date, time, millis, address);
+
             pushRef.setValue(event);
 
             Toast.makeText(this, "event added", Toast.LENGTH_LONG).show();

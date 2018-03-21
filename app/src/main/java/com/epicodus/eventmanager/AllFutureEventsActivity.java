@@ -1,19 +1,9 @@
 package com.epicodus.eventmanager;
 
-import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.icu.util.Calendar;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,16 +17,22 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
-public class FindEventActivity extends AppCompatActivity {
+public class AllFutureEventsActivity extends AppCompatActivity {
+    private static final String TAG = "AllFutureEventsActivity";
 
-    private static final String TAG = "FindEventActivity";
+
     private TextView mTvDateToday;
-    private TextView mTvHowManyEvents;
     private RecyclerView mRecyclerView;
     private EventListAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
+
+    public static final String EVENT_NAME = "eventname";
+    public static final String EVENT_ID = "eventid";
+    //define view objects
+
 
     public ArrayList<Event> mEvents = new ArrayList<>();
 
@@ -48,16 +44,30 @@ public class FindEventActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_today_events);
 
         mTvDateToday = (TextView) findViewById(R.id.tvDateToday);
-        mTvHowManyEvents = (TextView) findViewById(R.id.tvHowManyEvents);
+
+
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat ss = new SimpleDateFormat("M/dd/yyyy");///or double M
+        Date date = new Date();
+        String currentDate = ss.format(date);
+        mTvDateToday.setText("Today is " + currentDate);
+        mTvDateToday.setText("All Future Events");
+        databaseEvents = FirebaseDatabase.getInstance().getReference("events");
+        // Write a message to the database
+
+        //http://javarevisited.blogspot.com/2012/12/how-to-convert-millisecond-to-date-in-java-example.html
+
+
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
 
-        Intent incomingIntent = getIntent();
-        String date = incomingIntent.getStringExtra("date");
-        mTvDateToday.setText("Events for " + date);
+        // Set the properties of the LinearLayoutManager
+        mLayoutManager = new LinearLayoutManager(AllFutureEventsActivity.this);
+        // mLayoutManager.setReverseLayout(true);
+        //mLayoutManager.setStackFromEnd(true);
 
+        // And now set it to the RecyclerView
 
-        mLayoutManager = new LinearLayoutManager(FindEventActivity.this);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
 
@@ -67,7 +77,17 @@ public class FindEventActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
 
-        Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").equalTo(date);
+        DatabaseReference databaseEvents = FirebaseDatabase
+                .getInstance()
+                .getReference("events")
+                .child(uid);
+
+        Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").startAt(currentDate);///to display all events - no old ones
+//        Query query = FirebaseDatabase.getInstance()
+//                    .getReference("events")
+//                    .child(uid)
+//                    .orderByChild("millis");
+
         query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -75,14 +95,11 @@ public class FindEventActivity extends AppCompatActivity {
                 mEvents.clear();
 
                 for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-                            Event event = eventSnapshot.getValue(Event.class);
+                    Event event = eventSnapshot.getValue(Event.class);
 
                     mEvents.add(event);
                 }
 
-                if (mEvents.size() == 0) {
-                    mTvHowManyEvents.setText("Nothing is planned for this day");
-                }
                 mRecyclerView.setAdapter(mAdapter);
             }
 

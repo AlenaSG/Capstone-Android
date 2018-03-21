@@ -3,38 +3,28 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
 
-    <Button
-        android:id="@+id/btnGoToCalendar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Go to calendar"
-        android:layout_alignBaseline="@+id/btnSelectDate"
-        android:layout_alignBottom="@+id/btnSelectDate"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="48dp"
-        android:layout_marginEnd="48dp" />
-
-    <Button
-        android:id="@+id/btnSelectDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="select date"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="14dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
     <TextView
         android:id="@+id/tvDate"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnSelectDate"
         android:layout_marginTop="74dp"
-        android:layout_toLeftOf="@+id/btnGoToCalendar"
-        android:layout_toStartOf="@+id/btnGoToCalendar"
-        android:textSize="30sp"
-        android:hint="Date" />
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25sp" />
+
+    <TextView
+        android:id="@+id/tvNumberOfEvents"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvDate"
+        android:layout_marginTop="74dp"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimary"
+        android:textSize="25sp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recyclerView"
+        />
 </RelativeLayout>

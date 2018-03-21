@@ -50,6 +50,7 @@ public class TodayEventsActivity extends AppCompatActivity {
 
 
     private TextView mTvDateToday;
+    private TextView mTvHowManyEvents;
     private RecyclerView mRecyclerView;
     private EventListAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
@@ -67,7 +68,7 @@ public class TodayEventsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_today_events);
-
+        mTvHowManyEvents = (TextView) findViewById(R.id.tvHowManyEvents);
         mTvDateToday = (TextView) findViewById(R.id.tvDateToday);
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat ss = new SimpleDateFormat("M/dd/yyyy");///or double M
@@ -123,6 +124,9 @@ public class TodayEventsActivity extends AppCompatActivity {
                     mEvents.add(event);
                 }
 
+                if (mEvents.size() == 0) {
+                    mTvHowManyEvents.setText("Nothing is planned for today");
+                }
                 mRecyclerView.setAdapter(mAdapter);
             }
 
