@@ -22,7 +22,9 @@ public class EventDetailActivity extends AppCompatActivity {
 
         mEvents = Parcels.unwrap(getIntent().getParcelableExtra("events"));
         int startingPosition = getIntent().getIntExtra("position", 0);
+        //int startingPosition = Integer.parseInt(getIntent().getStringExtra("position"));
 
+        //intent.putExtra("position", itemPosition + "");
         adapterViewPager = new EventPagerAdapter(getSupportFragmentManager(), mEvents);
         mViewPager.setAdapter(adapterViewPager);
         mViewPager.setCurrentItem(startingPosition);

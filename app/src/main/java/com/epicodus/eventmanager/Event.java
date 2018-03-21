@@ -15,7 +15,7 @@ public class Event {
     //String link;
     String pushID;
     //String imageURL;
-
+    String  index;//nubers come before strings, will overwrite this string index with numerical index to add new items to end of the list
 
     public Event(){}
 
@@ -28,6 +28,7 @@ public class Event {
         this.time = time;
         this.millis = millis;
         this.address = address;
+        this.index = "not_specified";
         //    this.link = link;
 //        this.imageURL = imageURL;
 
@@ -94,6 +95,14 @@ public class Event {
 
     public void setPushID(String pushID) {
         this.pushID = pushID;
+    }
+
+    public String getIndex() {
+        return index;
+    }
+
+    public void setIndex(String index) {
+        this.index = index;
     }
 //
 //    public String getLink() {

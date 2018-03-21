@@ -46,6 +46,8 @@ import static android.support.v7.recyclerview.R.attr.layoutManager;
 import static com.epicodus.eventmanager.R.id.recyclerView;
 import static com.epicodus.eventmanager.R.id.theTimePicker;
 
+
+//shake to pay - starbucks - shake to add new event
 public class CreateEventActivity extends AppCompatActivity {
     private static final String TAG = "CreateEventActivity";
 

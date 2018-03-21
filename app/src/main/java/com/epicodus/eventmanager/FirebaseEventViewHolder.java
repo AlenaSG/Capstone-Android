@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.epicodus.eventmanager.util.ItemTouchHelperViewHolder;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -17,24 +18,25 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-
-public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+//public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
     private static final int MAX_WIDTH = 200;
     private static final int MAX_HEIGHT = 200;
 
     View mView;
     Context mContext;
-    //public ImageView mEventImageView;
+    public ImageView mEventImageView;
 
     public FirebaseEventViewHolder(View itemView) {
         super(itemView);
         mView = itemView;
         mContext = itemView.getContext();
-        itemView.setOnClickListener(this);
+        //itemView.setOnClickListener(this); return it for all other cases
     }
 
     public void bindEvent(Event event) {
-        ImageView eventImageView = (ImageView) mView.findViewById(R.id.eventImageView);
+        mEventImageView = (ImageView) mView.findViewById(R.id.eventImageView);
+        //ImageView eventImageView = (ImageView) mView.findViewById(R.id.eventImageView);
         TextView nameTextView = (TextView) mView.findViewById(R.id.eventNameTextView);
         TextView typeTextView = (TextView) mView.findViewById(R.id.typeTextView);
         TextView dateTextView = (TextView) mView.findViewById(R.id.dateTextView);
@@ -60,46 +62,42 @@ public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements 
         String birthday = "Birthday";
         String show = "Show";
         //word "class" is taken
-        String other = "Other";
+        //String other = "Other";
 
         if (typeTextView.getText().equals(birthday)) {
-            eventImageView.setImageResource(R.drawable.birthday_cupcake);
+            mEventImageView.setImageResource(R.drawable.birthday_cupcake);
         } else if (typeTextView.getText().equals(show)) {
-            eventImageView.setImageResource(R.drawable.show_curtains);
+            mEventImageView.setImageResource(R.drawable.show_curtains);
         }
         if (typeTextView.getText().equals("Class")) {
-            eventImageView.setImageResource(R.drawable.class_hands);
+            mEventImageView.setImageResource(R.drawable.class_hands);
         }
 
             dateTextView.setText(event.getDate());
         }
 
-//        mNameTextView.setText(restaurant.getName());
-//        mCategoryTextView.setText(restaurant.getCategories().get(0));
-//        mRatingTextView.setText("Rating: " + restaurant.getRating() + "/5");
-//    }
 
 //    public static Bitmap decodeFromFirebaseBase64(String image) throws IOException {
 //        byte[] decodedByteArray = android.util.Base64.decode(image, Base64.DEFAULT);
 //        return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
 //    }
     //////////Use this for View Property Animation
-//    @Override
-//    public void onItemSelected() {
-//        itemView.animate()
-//                .alpha(0.7f)
-//                .scaleX(0.9f)
-//                .scaleY(0.9f)
-//                .setDuration(500);
-//    }
-//
-//    @Override
-//    public void onItemClear() {
-//        itemView.animate()
-//                .alpha(1f)
-//                .scaleX(1f)
-//                .scaleY(1f);
-//    }
+    @Override
+    public void onItemSelected() {
+        itemView.animate()
+                .alpha(0.7f)
+                .scaleX(0.9f)
+                .scaleY(0.9f)
+                .setDuration(2000);
+    }
+
+    @Override
+    public void onItemClear() {
+        itemView.animate()
+                .alpha(1f)
+                .scaleX(1f)
+                .scaleY(1f);
+    }
 
 
 //    @Override
@@ -118,31 +116,33 @@ public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements 
 //        set.start();
 //    }
 
-    @Override
-    public void onClick(View view) {
-        final ArrayList<Event> events = new ArrayList<>();
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("events");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    events.add(snapshot.getValue(Event.class));
-                }
-
-                int itemPosition = getLayoutPosition();
-
-                Intent intent = new Intent(mContext, EventDetailActivity.class);
-                intent.putExtra("position", itemPosition + "");
-                intent.putExtra("events", Parcels.wrap(events));
-
-                mContext.startActivity(intent);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-    }
+//onCick is removed from here - instead, add a click listener to our FirebaseEventListAdapter in the populateViewHolder() method:
+    //@Override
+//    public void onClick(View view) {
+//        final ArrayList<Event> events = new ArrayList<>();
+//
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("events");
+//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    events.add(snapshot.getValue(Event.class));
+//                }
+//
+//                int itemPosition = getLayoutPosition();
+//
+//                Intent intent = new Intent(mContext, EventDetailActivity.class);
+//                intent.putExtra("position", itemPosition + "");
+//                intent.putExtra("events", Parcels.wrap(events));
+//
+//                mContext.startActivity(intent);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//            }
+//        });
+//    }
 }

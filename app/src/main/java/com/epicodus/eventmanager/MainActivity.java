@@ -150,6 +150,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this, "You are inside my account", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_logout) {
             Log.d(TAG, "onNavigationItemSelected: this is logout action");
+            logout();
+            return true;
         } else if (id == R.id.nav_settings) {
             fragment = new SettingsFragment();
             Log.d(TAG, "onNavigationItemSelected: this is settings action");
