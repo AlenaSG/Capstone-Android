@@ -109,7 +109,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+            //super.onBackPressed();
+            Intent intent = new Intent(MainActivity.this, MainActivity.class);//is there another way to stay in the activity?
+            startActivity(intent);
         }
     }
 
