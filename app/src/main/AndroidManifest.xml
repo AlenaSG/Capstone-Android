@@ -27,8 +27,9 @@
         <activity android:name=".EventDetailActivity" />
         <activity android:name=".WelcomeScreenActivity" />
         <activity android:name=".TodayEventsActivity" />
-        <activity android:name=".AllFutureEventsActivity"></activity>
-        <activity android:name=".MonthEventsActivity"></activity>
+        <activity android:name=".AllFutureEventsActivity" />
+        <activity android:name=".MonthEventsActivity" />
+        <activity android:name=".QuoteActivity"></activity>
     </application>
 
 </manifest>
