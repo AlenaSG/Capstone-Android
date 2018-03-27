@@ -14,12 +14,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="today"
+            android:textColor="@color/colorPrimary"
             android:layout_weight="50"
             android:id="@+id/todayBtn" />
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="this week"
+            android:textColor="@color/colorPrimary"
             android:layout_weight="50"
             android:id="@+id/weekBtn"/>
     </LinearLayout>
@@ -34,12 +36,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="this month"
+        android:textColor="@color/colorPrimary"
         android:layout_weight="50"
         android:id="@+id/monthBtn"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="all events"
+        android:textColor="@color/colorPrimary"
         android:layout_weight="50"
         android:id="@+id/allBtn"/>
     </LinearLayout>
@@ -48,4 +52,11 @@
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/ic_add_white_24dp"
+        android:layout_margin="16dp" />
 </LinearLayout>

@@ -2,6 +2,8 @@ package com.epicodus.eventmanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +23,7 @@ public class CalendarActivity extends AppCompatActivity {
     private Button mAllBtn;
 
     public String mDateToday;
+    public FloatingActionButton mFab;
 
 
     @Override
@@ -48,6 +51,17 @@ public class CalendarActivity extends AppCompatActivity {
         mWeekBtn = (Button) findViewById(R.id.weekBtn);
         mMonthBtn = (Button) findViewById(R.id.monthBtn);
         mAllBtn = (Button) findViewById(R.id.allBtn);
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
+
+        mFab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                Intent intent = new Intent(CalendarActivity.this, CreateEventActivity.class);
+                startActivity(intent);
+            }
+        });
 
         mTodayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
