@@ -29,8 +29,7 @@ public class AllFutureEventsActivity extends AppCompatActivity {
     private EventListAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
 
-    public static final String EVENT_NAME = "eventname";
-    public static final String EVENT_ID = "eventid";
+
     //define view objects
 
 

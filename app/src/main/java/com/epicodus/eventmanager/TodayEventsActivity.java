@@ -72,20 +72,44 @@ public class TodayEventsActivity extends AppCompatActivity implements OnStartDra
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
-
-
-        //include query here
-        //Toast.makeText(this, "JUST BEFORE set adapter", Toast.LENGTH_SHORT).show();
-        setUpFirebaseAdapter();
-    }
-
-    private void setUpFirebaseAdapter() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
 
-        Query query = FirebaseDatabase.getInstance()
-                .getReference("events")
-                .child(uid).orderByChild(Constants.FIREBASE_QUERY_INDEX);
+        //Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild(Constants.FIREBASE_QUERY_INDEX);
+
+
+       Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").equalTo(currentDate);
+
+///still shows events from the whole list in detail event pager - create a new array?
+        //deletes events ok from detail pager view
+
+        mFirebaseAdapter = new FirebaseEventListAdapter(Event.class,
+                R.layout.event_list_item_drag, FirebaseEventViewHolder.class,
+                query, this, this);
+
+        //Set the properties of the LinearLayoutManager
+        mLayoutManager = new LinearLayoutManager(this);
+
+
+        // And now set it to the RecyclerView
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        //no need to make new Adapter, there's one above
+        //mFirebaseAdapter = new EventListAdapter(getApplicationContext(), mEvents);//from this part in CreateEventActivity
+
+        mRecyclerView.setAdapter(mFirebaseAdapter);
+
+        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mFirebaseAdapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+
+        //include query here
+        //Toast.makeText(this, "JUST BEFORE set adapter", Toast.LENGTH_SHORT).show();
+        //setUpFirebaseAdapter();
+    }
+
+   //private void setUpFirebaseAdapter() {
+
 //        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 //        String uid = user.getUid();
 //
@@ -94,26 +118,7 @@ public class TodayEventsActivity extends AppCompatActivity implements OnStartDra
 //                .getReference("events")
 //                .child(uid);
 
-        mFirebaseAdapter = new FirebaseEventListAdapter(Event.class,
-                R.layout.event_list_item_drag, FirebaseEventViewHolder.class,
-                query, this, this);
 
-         //Set the properties of the LinearLayoutManager
-          mLayoutManager = new LinearLayoutManager(this);
-
-
-        // And now set it to the RecyclerView
-
-          mRecyclerView.setLayoutManager(mLayoutManager);
-        //no need to make new Adapter, there's one above
-         //mFirebaseAdapter = new EventListAdapter(getApplicationContext(), mEvents);//from this part in CreateEventActivity
-
-         mRecyclerView.setAdapter(mFirebaseAdapter);
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mFirebaseAdapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
-    }
 
         //WHY doesnt it work?
 //
@@ -145,6 +150,7 @@ public class TodayEventsActivity extends AppCompatActivity implements OnStartDra
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         mItemTouchHelper.startDrag(viewHolder);
     }
+
 
 
 

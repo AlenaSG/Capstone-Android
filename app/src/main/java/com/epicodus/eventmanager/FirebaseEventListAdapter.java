@@ -57,7 +57,7 @@ public class FirebaseEventListAdapter extends FirebaseRecyclerAdapter<Event, Fir
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                //there is remove code below
             }
 
             @Override
@@ -88,29 +88,69 @@ public class FirebaseEventListAdapter extends FirebaseRecyclerAdapter<Event, Fir
                 return false;
             }
         });
-
+//
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-//                int itemPosition = viewHolder.getAdapterPosition();
+                // int itemPosition = viewHolder.getAdapterPosition();
 //                if (mOrientation == Configuration.ORIENTATION_LANDSCAPE) {
 //                    createDetailFragment(itemPosition);
 //                } else {
-                    Intent intent = new Intent(mContext, EventDetailActivity.class);
-                    intent.putExtra("position", viewHolder.getAdapterPosition());
-                    intent.putExtra("events", Parcels.wrap(mEvents));
-                    //intent.putExtra("source", SyncStateContract.Constants.SOURCE_SAVED);
-                    mContext.startActivity(intent);
-                }
+                Intent intent = new Intent(mContext, EventDetailActivity.class);
+                intent.putExtra("position", viewHolder.getAdapterPosition());
+                //intent.putExtra("position", itemPosition + "");
+                //intent.putExtra("eventName", viewHolder.mNameTextView.getText().toString());
+                intent.putExtra("events", Parcels.wrap(mEvents));
+                //intent.putExtra("source", SyncStateContract.Constants.SOURCE_SAVED);
+                mContext.startActivity(intent);
+            }
         });
+    }
+        //////////////////////// code from original viewholder
+       // @Override
+//    public void onClick(View view) {
+//        final ArrayList<Event> events = new ArrayList<>();
+//
+//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("events");
+//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+//
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    events.add(snapshot.getValue(Event.class));
+//                }
+//
+//                int itemPosition = getLayoutPosition();
+//
+//                Intent intent = new Intent(mContext, EventDetailActivity.class);
+//                intent.putExtra("position", itemPosition + "");
+//                intent.putExtra("events", Parcels.wrap(events));
+//
+//                mContext.startActivity(intent);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//            }
+//        });
+//    }
+
+
+        ////////////////////////
+
+
+
+
+
 //
 //    private void createDetailFragment(int position){
 //        EventDetailFragment detailFragment = EventDetailFragment.newInstance(mEvents, position, SyncStateContract.Constants.SOURCE_SAVED);
 //        FragmentTransaction ft = ((FragmentActivity) mContext).getSupportFragmentManager().beginTransaction();
 //        ft.replace(R.id.eventDetailContainer, detailFragment);
 //        ft.commit();
-    }
+   // }
+
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
@@ -128,12 +168,14 @@ public class FirebaseEventListAdapter extends FirebaseRecyclerAdapter<Event, Fir
 
     private void setIndexInFirebase() {
         for (Event event : mEvents) {
+
             int index = mEvents.indexOf(event);
             DatabaseReference ref = getRef(index);
             event.setIndex(Integer.toString(index));
             ref.setValue(event);
         }
     }
+
     @Override
     public void cleanup() {
         super.cleanup();

@@ -1,22 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorTransparentWhite">
+    tools:context="com.epicodus.eventmanager.QuoteFragment"
+    android:background="@color/primary_light"
+    android:padding="10dp">
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Get a Quote"
         android:id="@+id/btnQuote"
-        android:text="my quote button"
-        android:background="@color/primary_light"/>
+        android:background="@color/colorPrimary"
+        android:textColor="@color/accent"
+        android:gravity="center"
+        android:elevation="10dp"
+        android:textSize="20sp" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="I am a text view"
-        android:textSize="40sp"
-        android:id="@+id/tvSettings"/>
+        android:id="@+id/tvText"
+        android:hint="You get a new quote each time you press the button!"
+        android:textSize="22sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:gravity="center"
+        android:paddingTop="45dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvAuthor"
+        android:textSize="17sp"
+        android:textColor="@color/colorPrimaryDark"
+        android:paddingTop="10dp"
+        android:gravity="right"
+        android:textStyle="italic"/>
 
 </LinearLayout>

@@ -18,26 +18,28 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-//public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
+public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+//public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder {
     private static final int MAX_WIDTH = 200;
     private static final int MAX_HEIGHT = 200;
 
     View mView;
     Context mContext;
     public ImageView mEventImageView;
+    public TextView mNameTextView;
 
     public FirebaseEventViewHolder(View itemView) {
         super(itemView);
         mView = itemView;
         mContext = itemView.getContext();
-        //itemView.setOnClickListener(this); return it for all other cases
+        itemView.setOnClickListener(this); //return it for all other cases month events, this week etc.
     }
 
     public void bindEvent(Event event) {
         mEventImageView = (ImageView) mView.findViewById(R.id.eventImageView);
         //ImageView eventImageView = (ImageView) mView.findViewById(R.id.eventImageView);
-        TextView nameTextView = (TextView) mView.findViewById(R.id.eventNameTextView);
+        mNameTextView = (TextView) mView.findViewById(R.id.eventNameTextView);
+        //TextView nameTextView = (TextView) mView.findViewById(R.id.eventNameTextView);
         TextView typeTextView = (TextView) mView.findViewById(R.id.typeTextView);
         TextView dateTextView = (TextView) mView.findViewById(R.id.dateTextView);
 
@@ -56,7 +58,7 @@ public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements 
 //                    .centerCrop()
 //                    .into(mRestaurantImageView);
 
-            nameTextView.setText(event.getName());
+            mNameTextView.setText(event.getName());
             typeTextView.setText(event.getType());
 
         String birthday = "Birthday";
@@ -81,23 +83,23 @@ public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements 
 //        byte[] decodedByteArray = android.util.Base64.decode(image, Base64.DEFAULT);
 //        return BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
 //    }
-    //////////Use this for View Property Animation
-    @Override
-    public void onItemSelected() {
-        itemView.animate()
-                .alpha(0.7f)
-                .scaleX(0.9f)
-                .scaleY(0.9f)
-                .setDuration(2000);
-    }
-
-    @Override
-    public void onItemClear() {
-        itemView.animate()
-                .alpha(1f)
-                .scaleX(1f)
-                .scaleY(1f);
-    }
+    ////////Use this for View Property Animation
+//    @Override
+//    public void onItemSelected() {
+//        itemView.animate()
+//                .alpha(0.7f)
+//                .scaleX(0.9f)
+//                .scaleY(0.9f)
+//                .setDuration(2000);
+//    }
+//
+//    @Override
+//    public void onItemClear() {
+//        itemView.animate()
+//                .alpha(1f)
+//                .scaleX(1f)
+//                .scaleY(1f);
+//    }
 
 
 //    @Override
@@ -118,31 +120,31 @@ public class FirebaseEventViewHolder extends RecyclerView.ViewHolder implements 
 
 
 //onCick is removed from here - instead, add a click listener to our FirebaseEventListAdapter in the populateViewHolder() method:
-    //@Override
-//    public void onClick(View view) {
-//        final ArrayList<Event> events = new ArrayList<>();
-//
-//        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("events");
-//        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-//
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                    events.add(snapshot.getValue(Event.class));
-//                }
-//
-//                int itemPosition = getLayoutPosition();
-//
-//                Intent intent = new Intent(mContext, EventDetailActivity.class);
-//                intent.putExtra("position", itemPosition + "");
-//                intent.putExtra("events", Parcels.wrap(events));
-//
-//                mContext.startActivity(intent);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//            }
-//        });
-//    }
+    @Override
+    public void onClick(View view) {
+        final ArrayList<Event> events = new ArrayList<>();
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("events");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    events.add(snapshot.getValue(Event.class));
+                }
+
+                int itemPosition = getLayoutPosition();
+
+                Intent intent = new Intent(mContext, EventDetailActivity.class);
+                intent.putExtra("position", itemPosition + "");
+                intent.putExtra("events", Parcels.wrap(events));
+
+                mContext.startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+    }
 }

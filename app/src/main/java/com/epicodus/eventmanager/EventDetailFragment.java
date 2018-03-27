@@ -5,17 +5,22 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.CalendarContract;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 //import com.epicodus.eventmanager.Event;
 
@@ -38,6 +43,7 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
     TextView mTimeLabel;
     TextView mAddressLabel;
     Button mAddToCalendarButton;
+    private static final int REQUEST_IMAGE_CAPTURE = 111;
 
     private Event mEvent;
 
@@ -54,6 +60,7 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mEvent = Parcels.unwrap(getArguments().getParcelable("event"));
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -116,4 +123,32 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
         }
     }
 
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        super.onCreateOptionsMenu(menu, inflater);
+//        //if (mSource.equals("saved")) {
+//            inflater.inflate(R.menu.menu_photo, menu);
+////        } else {
+////            inflater.inflate(R.menu.menu_main, menu);
+////        }
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_photo:
+//                onLaunchCamera();
+//            default:
+//                break;
+//        }
+//        return false;
+//    }
+//
+//
+//    public void onLaunchCamera() {
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        if (takePictureIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+//            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+//        }
+//    }
 }

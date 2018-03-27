@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="select date"
         android:elevation="10dp"
-        android:layout_below="@+id/etName"/>
+        android:layout_below="@+id/etName" />
 
     <TextView
         android:layout_width="wrap_content"

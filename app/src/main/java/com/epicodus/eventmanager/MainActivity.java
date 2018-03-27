@@ -64,6 +64,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         mBtnCreateEvent = (Button) findViewById(R.id.btnCreateEvent);
         mBtnFindEvent = (Button) findViewById(R.id.btnFindEvent);
 
+//        //mBtnCreateEvent.setFocusable(true);
+//        mBtnCreateEvent.setFocusableInTouchMode(true);///add this line
+//        mBtnCreateEvent.requestFocus();
+
 
 
         Typeface ostrichFont = Typeface.createFromAsset(getAssets(), "fonts/satisfy.ttf");
@@ -164,10 +168,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             fragment = new SettingsFragment();
             Log.d(TAG, "onNavigationItemSelected: this is settings action");
             Toast.makeText(this, "You are inside settings fragment", Toast.LENGTH_SHORT).show();
+            mBtnCreateEvent.setEnabled(false);
+            mBtnFindEvent.setEnabled(false);
         } else if (id == R.id.nav_quotes) {
             fragment = new QuoteFragment();
             Log.d(TAG, "onNavigationItemSelected: this is quotes action");
             Toast.makeText(this, "You are inside settings fragment", Toast.LENGTH_SHORT).show();
+            mBtnCreateEvent.setEnabled(false);
+            mBtnFindEvent.setEnabled(false);
     }
 
         if(fragment != null) {
@@ -178,7 +186,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             //ft.commitNow();
             ft.commit();
         }
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

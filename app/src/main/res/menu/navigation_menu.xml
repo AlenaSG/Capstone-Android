@@ -10,7 +10,7 @@
         android:title="Settings" />
 
     <item android:id="@+id/nav_quotes"
-        android:icon="@drawable/ic_settings_white_24dp"
+        android:icon="@drawable/ic_format_quote_white_24dp"
         android:title="Quotes" />
 
     <item android:id="@+id/nav_logout"
