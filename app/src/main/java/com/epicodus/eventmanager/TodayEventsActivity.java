@@ -48,65 +48,65 @@ import java.util.List;
 import java.util.Locale;
 
 
-////////////////////////////////////////////// FIRST VARIANT WITH STARTdragListener//////working display without Value event listener
-public class TodayEventsActivity extends AppCompatActivity implements OnStartDragListener {
-    private DatabaseReference mEventReference;
-    private FirebaseEventListAdapter mFirebaseAdapter;
-    private RecyclerView mRecyclerView;
-    private TextView mTvDateToday;
-    private ItemTouchHelper mItemTouchHelper;
-
-    private LinearLayoutManager mLayoutManager;//from CreateEventActivity
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_today_events);
-        mTvDateToday = (TextView) findViewById(R.id.tvDateToday);
-
-        Calendar calendar = Calendar.getInstance();
-        SimpleDateFormat ss = new SimpleDateFormat("M/dd/yyyy");///or double M
-        Date date = new Date();
-        String currentDate = ss.format(date);
-        mTvDateToday.setText("Today is " + currentDate);
-
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String uid = user.getUid();
-
-        //Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild(Constants.FIREBASE_QUERY_INDEX);
-
-
-       Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").equalTo(currentDate);
-
-///still shows events from the whole list in detail event pager - create a new array?
-        //deletes events ok from detail pager view
-
-        mFirebaseAdapter = new FirebaseEventListAdapter(Event.class,
-                R.layout.event_list_item_drag, FirebaseEventViewHolder.class,
-                query, this, this);
-
-        //Set the properties of the LinearLayoutManager
-        mLayoutManager = new LinearLayoutManager(this);
-
-
-        // And now set it to the RecyclerView
-
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        //no need to make new Adapter, there's one above
-        //mFirebaseAdapter = new EventListAdapter(getApplicationContext(), mEvents);//from this part in CreateEventActivity
-
-        mRecyclerView.setAdapter(mFirebaseAdapter);
-
-        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mFirebaseAdapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
-
-        //include query here
-        //Toast.makeText(this, "JUST BEFORE set adapter", Toast.LENGTH_SHORT).show();
-        //setUpFirebaseAdapter();
-    }
+//////////////////////////////////////////////// FIRST VARIANT WITH STARTdragListener//////working display without Value event listener
+//public class TodayEventsActivity extends AppCompatActivity implements OnStartDragListener {
+//    private DatabaseReference mEventReference;
+//    private FirebaseEventListAdapter mFirebaseAdapter;
+//    private RecyclerView mRecyclerView;
+//    private TextView mTvDateToday;
+//    private ItemTouchHelper mItemTouchHelper;
+//
+//    private LinearLayoutManager mLayoutManager;//from CreateEventActivity
+//
+//    @Override
+//    protected void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        setContentView(R.layout.fragment_today_events);
+//        mTvDateToday = (TextView) findViewById(R.id.tvDateToday);
+//
+//        Calendar calendar = Calendar.getInstance();
+//        SimpleDateFormat ss = new SimpleDateFormat("M/dd/yyyy");///or double M
+//        Date date = new Date();
+//        String currentDate = ss.format(date);
+//        mTvDateToday.setText("Today is " + currentDate);
+//
+//        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+//
+//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        String uid = user.getUid();
+//
+//        //Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild(Constants.FIREBASE_QUERY_INDEX);
+//
+//
+//       Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").equalTo(currentDate);
+//
+/////still shows events from the whole list in detail event pager - create a new array?
+//        //deletes events ok from detail pager view
+//
+//        mFirebaseAdapter = new FirebaseEventListAdapter(Event.class,
+//                R.layout.event_list_item_drag, FirebaseEventViewHolder.class,
+//                query, this, this);
+//
+//        //Set the properties of the LinearLayoutManager
+//        mLayoutManager = new LinearLayoutManager(this);
+//
+//
+//        // And now set it to the RecyclerView
+//
+//        mRecyclerView.setLayoutManager(mLayoutManager);
+//        //no need to make new Adapter, there's one above
+//        //mFirebaseAdapter = new EventListAdapter(getApplicationContext(), mEvents);//from this part in CreateEventActivity
+//
+//        mRecyclerView.setAdapter(mFirebaseAdapter);
+//
+//        ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(mFirebaseAdapter);
+//        mItemTouchHelper = new ItemTouchHelper(callback);
+//        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+//
+//        //include query here
+//        //Toast.makeText(this, "JUST BEFORE set adapter", Toast.LENGTH_SHORT).show();
+//        //setUpFirebaseAdapter();
+//    }
 
    //private void setUpFirebaseAdapter() {
 
@@ -141,20 +141,20 @@ public class TodayEventsActivity extends AppCompatActivity implements OnStartDra
         /////////////code from CreateEventActivity ends
 
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mFirebaseAdapter.cleanup();
-    }
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
-    }
-
-
-
-
-}
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        mFirebaseAdapter.cleanup();
+//    }
+//    @Override
+//    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+//        mItemTouchHelper.startDrag(viewHolder);
+//    }
+//
+//
+//
+//
+//}
 
 
 
@@ -230,87 +230,87 @@ public class TodayEventsActivity extends AppCompatActivity implements OnStartDra
 
 
 
-//////////////////////////?SECOND VARIANT////////// wih valueEventlistener//working fine  - before animation
-//public class TodayEventsActivity extends AppCompatActivity {
-//    private static final String TAG = "TodayEventsActivity";
-//
-//
-//    private TextView mTvDateToday;
-//    private TextView mTvHowManyEvents;
-//    private RecyclerView mRecyclerView;
-//    private EventListAdapter mAdapter;
-//    private LinearLayoutManager mLayoutManager;
-//
-//    public static final String EVENT_NAME = "eventname";
-//    public static final String EVENT_ID = "eventid";
-//    //define view objects
-//
-//
-//    public ArrayList<Event> mEvents = new ArrayList<>();
-//
-//    DatabaseReference databaseEvents;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.fragment_today_events);
-//        mTvHowManyEvents = (TextView) findViewById(R.id.tvHowManyEvents);
-//        mTvDateToday = (TextView) findViewById(R.id.tvDateToday);
-//        Calendar calendar = Calendar.getInstance();
-//        SimpleDateFormat ss = new SimpleDateFormat("M/dd/yyyy");///or double M
-//        Date date = new Date();
-//        String currentDate = ss.format(date);
-//        mTvDateToday.setText("Today is " + currentDate);
-//        databaseEvents = FirebaseDatabase.getInstance().getReference("events");
-//
-//        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-//
-//
-//        // Set the properties of the LinearLayoutManager
-//        mLayoutManager = new LinearLayoutManager(TodayEventsActivity.this);
-//       // mLayoutManager.setReverseLayout(true);
-//        //mLayoutManager.setStackFromEnd(true);
-//
-//        // And now set it to the RecyclerView
-//
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-//        mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
-//
-//        mRecyclerView.setAdapter(mAdapter);
-//
-//        mRecyclerView.setHasFixedSize(true);
-//        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        String uid = user.getUid();
-//
-//
-//       Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").equalTo(currentDate);//display todays events
-//
-//        query.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//
-//                mEvents.clear();
-//
-//                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
-//                    Event event = eventSnapshot.getValue(Event.class);
-//
-//                    mEvents.add(event);
-//                }
-//
-//                if (mEvents.size() == 0) {
-//                    mTvHowManyEvents.setText("Nothing is planned for today");
-//                }
-//                mRecyclerView.setAdapter(mAdapter);
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//    }
-//}
-//
+////////////////////////?SECOND VARIANT////////// wih valueEventlistener//working fine  - before animation
+public class TodayEventsActivity extends AppCompatActivity {
+    private static final String TAG = "TodayEventsActivity";
+
+
+    private TextView mTvDateToday;
+    private TextView mTvHowManyEvents;
+    private RecyclerView mRecyclerView;
+    private EventListAdapter mAdapter;
+    private LinearLayoutManager mLayoutManager;
+
+    public static final String EVENT_NAME = "eventname";
+    public static final String EVENT_ID = "eventid";
+    //define view objects
+
+
+    public ArrayList<Event> mEvents = new ArrayList<>();
+
+    DatabaseReference databaseEvents;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.fragment_today_events);
+        mTvHowManyEvents = (TextView) findViewById(R.id.tvHowManyEvents);
+        mTvDateToday = (TextView) findViewById(R.id.tvDateToday);
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat ss = new SimpleDateFormat("M/dd/yyyy");///or double M
+        Date date = new Date();
+        String currentDate = ss.format(date);
+        mTvDateToday.setText("Today is " + currentDate);
+        databaseEvents = FirebaseDatabase.getInstance().getReference("events");
+
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
+
+        // Set the properties of the LinearLayoutManager
+        mLayoutManager = new LinearLayoutManager(TodayEventsActivity.this);
+       // mLayoutManager.setReverseLayout(true);
+        //mLayoutManager.setStackFromEnd(true);
+
+        // And now set it to the RecyclerView
+
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new EventListAdapter(getApplicationContext(), mEvents);
+
+        mRecyclerView.setAdapter(mAdapter);
+
+        mRecyclerView.setHasFixedSize(true);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = user.getUid();
+
+
+       Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").equalTo(currentDate);//display todays events
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                mEvents.clear();
+
+                for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
+                    Event event = eventSnapshot.getValue(Event.class);
+
+                    mEvents.add(event);
+                }
+
+                if (mEvents.size() == 0) {
+                    mTvHowManyEvents.setText("Nothing is planned for today");
+                }
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+}
+
 
 
 

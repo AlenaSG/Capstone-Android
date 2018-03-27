@@ -1,33 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/fragment_container">
+    android:layout_height="match_parent"
+    android:background="@color/primary_light">
 
-    </FrameLayout>
-    <Button
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="today"
-        android:id="@+id/todayBtn"/>
-    <Button
-        android:layout_width="match_parent"
+        android:weightSum="100"
+        android:gravity="center|bottom">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="today"
+            android:layout_weight="50"
+            android:id="@+id/todayBtn" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="this week"
+            android:layout_weight="50"
+            android:id="@+id/weekBtn"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="this week"
-        android:id="@+id/weekBtn"/>
+        android:weightSum="100"
+        android:gravity="center|bottom">
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="this month"
+        android:layout_weight="50"
         android:id="@+id/monthBtn"/>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="all events"
+        android:layout_weight="50"
         android:id="@+id/allBtn"/>
+    </LinearLayout>
 
     <CalendarView
         android:id="@+id/calendarView"

@@ -23,22 +23,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-/**
- * Created by alenagolovina on 3/20/18.
- */
-
 public class MonthEventsActivity extends AppCompatActivity {
 
     private static final String TAG = "MonthEventsActivity";
 
     private TextView mTvDateToday;
+    private TextView mTvHowManyEvents;
     private RecyclerView mRecyclerView;
     private EventListAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-
-    public static final String EVENT_NAME = "eventname";
-    public static final String EVENT_ID = "eventid";
-    //define view objects
 
 
     public ArrayList<Event> mEvents = new ArrayList<>();
@@ -51,20 +44,21 @@ public class MonthEventsActivity extends AppCompatActivity {
         setContentView(R.layout.fragment_today_events);
 
         mTvDateToday = (TextView) findViewById(R.id.tvDateToday);
-
+        mTvHowManyEvents = (TextView) findViewById(R.id.tvHowManyEvents);
 
         Calendar calendar = Calendar.getInstance();
-        String month = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+        String currentMonth = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault());
+        final int currentMonthDigit = Calendar.getInstance().get(Calendar.MONTH);
         SimpleDateFormat ss = new SimpleDateFormat("M/dd/yyyy");///or double M
         Date date = new Date();
         String currentDate = ss.format(date);
-        mTvDateToday.setText("Today is " + currentDate + ", " + month);
+        final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+        mTvDateToday.setText("Today is " + currentDate + "\n" + "Events for "+ currentMonth + "(" + (currentMonthDigit+1) + "), " + currentYear);
         //databaseEvents = FirebaseDatabase.getInstance().getReference("events");
         databaseEvents = FirebaseDatabase.getInstance().getReference();
         // Write a message to the database
 
         //http://javarevisited.blogspot.com/2012/12/how-to-convert-millisecond-to-date-in-java-example.html
-
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
@@ -94,16 +88,23 @@ public class MonthEventsActivity extends AppCompatActivity {
 
                 for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
                     Event event = eventSnapshot.getValue(Event.class);
-                    Log.d(TAG, "onDataChange: HERE");
+
                     long eventMillis = event.getMillis();
                     android.icu.util.Calendar calendar = android.icu.util.Calendar.getInstance();
                     calendar.setTimeInMillis(eventMillis);
-                    DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");//but i only need month
-                    String dateOfEvent = formatter.format(calendar.getTime());
-                    //Date dateOfEvent = new Date(eventMillis);
-                    Log.d(TAG, "onDataChange: PRINTING DATE" + dateOfEvent);
-
-                    mEvents.add(event);
+                    DateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                    //String dateOfEvent = formatter.format(calendar.getTime());
+                    int eventYear = calendar.get(Calendar.YEAR);
+                    int eventMonth = calendar.get(Calendar.MONTH);
+                    //Log.d(TAG, "onDataChange: PRINTING DATE" + dateOfEvent);
+                    Log.d(TAG, "onDataChange: MONTH" + eventMonth);
+                    Log.d(TAG, "onDataChange: YEAR" + eventYear);
+                    if (eventYear == currentYear && eventMonth == currentMonthDigit) {
+                        mEvents.add(event);
+                    }
+                    if (mEvents.size() == 0) {
+                        mTvHowManyEvents.setText("Nothing is planned for this month");
+                    }
                 }
 
                 mRecyclerView.setAdapter(mAdapter);
