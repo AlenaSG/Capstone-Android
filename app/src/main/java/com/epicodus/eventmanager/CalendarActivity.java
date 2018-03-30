@@ -21,6 +21,8 @@ public class CalendarActivity extends AppCompatActivity {
     private Button mWeekBtn;
     private Button mMonthBtn;
     private Button mAllBtn;
+    private Button mAllPastBtn;
+    private Button mNextMonthBtn;
 
     public String mDateToday;
     public FloatingActionButton mFab;
@@ -51,13 +53,13 @@ public class CalendarActivity extends AppCompatActivity {
         mWeekBtn = (Button) findViewById(R.id.weekBtn);
         mMonthBtn = (Button) findViewById(R.id.monthBtn);
         mAllBtn = (Button) findViewById(R.id.allBtn);
+        mNextMonthBtn = (Button) findViewById(R.id.nextMonthBtn);
+        mAllPastBtn = (Button) findViewById(R.id.allPastBtn);
         mFab = (FloatingActionButton) findViewById(R.id.fab);
 
         mFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Here's a Snackbar", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
                 Intent intent = new Intent(CalendarActivity.this, CreateEventActivity.class);
                 startActivity(intent);
             }
@@ -85,16 +87,26 @@ public class CalendarActivity extends AppCompatActivity {
         mWeekBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(CalendarActivity.this, "WEEK EVENTS", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CalendarActivity.this, "NEXT 7 DAYS EVENTS", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CalendarActivity.this, WeekEventsActivity.class);
+                startActivity(intent);
             }
         });
 
         mMonthBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(CalendarActivity.this, "MONTH EVENTS", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CalendarActivity.this, "THIS MONTH EVENTS", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(CalendarActivity.this, MonthEventsActivity.class);
-                //intent.putExtra("todayDate", mDateToday);
+                startActivity(intent);
+            }
+        });
+
+        mNextMonthBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(CalendarActivity.this, "NEXT MONTH EVENTS", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CalendarActivity.this, NextMonthEventsActivity.class);
                 startActivity(intent);
             }
         });
@@ -105,10 +117,19 @@ public class CalendarActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Toast.makeText(CalendarActivity.this, "ALL FUTURE EVENTS", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(CalendarActivity.this, AllFutureEventsActivity.class);
-                //intent.putExtra("todayDate", mDateToday);
                 startActivity(intent);
             }
         });
+
+        mAllPastBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(CalendarActivity.this, "ALL PAST EVENTS", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(CalendarActivity.this, AllPastEventsActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
     }
 }

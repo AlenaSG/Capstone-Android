@@ -3,7 +3,10 @@
     package="com.epicodus.eventmanager">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -30,7 +33,10 @@
         <activity android:name=".TodayEventsActivity" />
         <activity android:name=".AllFutureEventsActivity" />
         <activity android:name=".MonthEventsActivity" />
-        <activity android:name=".QuoteActivity"></activity>
+        <activity android:name=".QuoteActivity" />
+        <activity android:name=".AllPastEventsActivity" />
+        <activity android:name=".NextMonthEventsActivity" />
+        <activity android:name=".WeekEventsActivity"></activity>
     </application>
 
 </manifest>

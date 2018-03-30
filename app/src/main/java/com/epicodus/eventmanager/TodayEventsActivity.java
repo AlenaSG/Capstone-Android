@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -301,6 +302,10 @@ public class TodayEventsActivity extends AppCompatActivity {
                     mTvHowManyEvents.setText("Nothing is planned for today");
                 }
                 mRecyclerView.setAdapter(mAdapter);
+
+                Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                        Snackbar.LENGTH_LONG)
+                        .show();
             }
 
             @Override
@@ -308,6 +313,8 @@ public class TodayEventsActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 }
 

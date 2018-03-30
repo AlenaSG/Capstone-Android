@@ -1,6 +1,13 @@
 package com.epicodus.eventmanager;
 
+import android.content.Context;
+import android.content.Intent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,7 +30,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class MonthEventsActivity extends AppCompatActivity {
+public class MonthEventsActivity extends AppCompatActivity implements SensorEventListener {
 
     private static final String TAG = "MonthEventsActivity";
 
@@ -32,6 +39,12 @@ public class MonthEventsActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private EventListAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
+
+    private SensorManager mSensorManager;
+    private Sensor mSensor;
+    private long lastUpdate = 0;
+    private float last_x, last_y, last_z;
+    private static final int SHAKE_THRESHOLD = 500;
 
 
     public ArrayList<Event> mEvents = new ArrayList<>();
@@ -53,7 +66,7 @@ public class MonthEventsActivity extends AppCompatActivity {
         Date date = new Date();
         String currentDate = ss.format(date);
         final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        mTvDateToday.setText("Today is " + currentDate + "\n" + "Events for "+ currentMonth + "(" + (currentMonthDigit+1) + "), " + currentYear);
+        mTvDateToday.setText("Today is " + currentDate + "\n" + "Events for " + currentMonth + "(" + (currentMonthDigit + 1) + "), " + currentYear);
         //databaseEvents = FirebaseDatabase.getInstance().getReference("events");
         databaseEvents = FirebaseDatabase.getInstance().getReference();
         // Write a message to the database
@@ -108,6 +121,9 @@ public class MonthEventsActivity extends AppCompatActivity {
                 }
 
                 mRecyclerView.setAdapter(mAdapter);
+                Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                        Snackbar.LENGTH_LONG)
+                        .show();
             }
 
             @Override
@@ -115,5 +131,47 @@ public class MonthEventsActivity extends AppCompatActivity {
 
             }
         });
+
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        mSensorManager.registerListener(this, mSensor, mSensorManager.SENSOR_DELAY_NORMAL);
     }
-}
+
+    @Override
+    public void onSensorChanged(SensorEvent event) {
+        Sensor sensor = event.sensor;
+
+        if (sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
+            float x = event.values[0];
+            float y = event.values[1];
+            float z = event.values[2];
+
+            long curTime = System.currentTimeMillis();
+
+            if ((curTime - lastUpdate) > 100) {
+                long diffTime = (curTime - lastUpdate);
+                lastUpdate = curTime;
+
+                float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+
+                if (speed > SHAKE_THRESHOLD) {
+                    Log.d("SensorEventListener", "AAAAAAAAAAAA shaking");
+
+                    last_x = x;
+                    last_y = y;
+                    last_z = z;
+
+                    Intent intent = new Intent(MonthEventsActivity.this, CreateEventActivity.class);
+                    startActivity(intent);
+
+                }
+            }
+        }
+    }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy){
+
+        }
+
+    }

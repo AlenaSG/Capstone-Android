@@ -80,24 +80,25 @@ public class QuoteFragment extends Fragment {
 
             @Override
             public void onResponse(Call call, final Response response) {
+                String text = null;
+                String author = null;
+                try {
+                    String jsonData = response.body().string();
+                    JSONObject quoteJSON = new JSONObject(jsonData);
+                    text = quoteJSON.getString("quoteText");
+                    author = quoteJSON.getString("quoteAuthor");
+                } catch (JSONException e) {
+                    // Do nothing, a response may be malformatted.
+                } catch (IOException ioe) {
+                    // Do nothing, there may be a network hickup while reading the response.
+                }
+                final String final_text = text == null ? "My funny default quote" : text;
+                final String final_author = text == null ? "Me" : author;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        try {
-                            String jsonData = response.body().string();
-
-                            JSONObject quoteJSON = new JSONObject(jsonData);
-
-                            String text = quoteJSON.getString("quoteText");
-                            String author = quoteJSON.getString("quoteAuthor");
-
-                            mText.setText(text);
-                            mAuthor.setText(author);
-                        } catch (JSONException e) {
-                            throw new RuntimeException(e);
-                        } catch (IOException ioe) {
-                            mText.setText("Error during get body");
-                        }
+                        mText.setText(final_text);
+                        mAuthor.setText(final_author);
                     }
                 });
             }

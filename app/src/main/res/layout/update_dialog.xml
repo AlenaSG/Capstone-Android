@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="10dp"
     android:paddingRight="10dp"
     android:paddingTop="10dp"
-    android:paddingLeft="10dp">
+    android:paddingLeft="10dp"
+    android:background="@color/primary_light">
 
     <EditText
         android:id="@+id/etNewName"
@@ -13,30 +15,50 @@
         android:layout_height="wrap_content"
         android:hint="Enter new name"
         android:ems="10"
-        android:inputType="textPersonName"/>
+        android:inputType="textPersonName" />
 
-    <EditText
-        android:id="@+id/etNewDate"
+    <Button
+        android:id="@+id/btnSelectDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Set New Date And Time"
+        android:textColor="@color/colorPrimary"/>
+
+    <TextView
+        android:id="@+id/tvNewDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter new date"
         android:ems="10"
+        android:textSize="18sp"
+        android:background="@color/icons"
+        android:padding="2dp"
+        android:layout_margin="2dp"
         android:inputType="textPersonName"/>
 
-    <EditText
-        android:id="@+id/etNewTime"
+    <TextView
+        android:id="@+id/tvNewTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter new time"
         android:ems="10"
+        android:textSize="18sp"
+        android:background="@color/icons"
+        android:padding="2dp"
+        android:layout_margin="2dp"
         android:inputType="textPersonName"/>
 
-    <EditText
-        android:id="@+id/etNewMillis"
+    <TextView
+        android:id="@+id/tvNewMillis"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter new millis"
+        android:background="@color/icons"
         android:ems="10"
+        android:textSize="18sp"
+        android:padding="2dp"
+        android:layout_margin="2dp"
         android:inputType="number"/>
 
     <EditText
@@ -57,11 +79,13 @@
         android:id="@+id/btnUpdate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save update" />
+        android:text="Save update"
+        android:textColor="@color/colorPrimary"/>
 
     <Button
-        android:id="@+id/btnDelete"
+        android:id="@+id/btnDismiss"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Delete Event" />
+        android:text="Dismiss"
+        android:textColor="@color/colorPrimary"/>
 </LinearLayout>

@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AllFutureEventsActivity extends AppCompatActivity {
-    private static final String TAG = "AllFutureEventsActivity";
+public class AllPastEventsActivity extends AppCompatActivity {
+    private static final String TAG = "AllPastEventsActivity";
 
 
     private TextView mTvDateToday;
@@ -51,7 +51,7 @@ public class AllFutureEventsActivity extends AppCompatActivity {
         Date date = new Date();
         String currentDate = ss.format(date);
         mTvDateToday.setText("Today is " + currentDate);
-        mTvDateToday.setText("All Future Events");
+        mTvDateToday.setText("All Past Events");
         databaseEvents = FirebaseDatabase.getInstance().getReference("events");
         // Write a message to the database
 
@@ -62,7 +62,7 @@ public class AllFutureEventsActivity extends AppCompatActivity {
 
 
         // Set the properties of the LinearLayoutManager
-        mLayoutManager = new LinearLayoutManager(AllFutureEventsActivity.this);
+        mLayoutManager = new LinearLayoutManager(AllPastEventsActivity.this);
         // mLayoutManager.setReverseLayout(true);
         //mLayoutManager.setStackFromEnd(true);
 
@@ -82,7 +82,7 @@ public class AllFutureEventsActivity extends AppCompatActivity {
                 .getReference("events")
                 .child(uid);
 
-        Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").startAt(currentDate);///to display all events - no old ones
+        Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").endAt(currentDate);///to display all events - no old ones
 //        Query query = FirebaseDatabase.getInstance()
 //                    .getReference("events")
 //                    .child(uid)
@@ -101,6 +101,7 @@ public class AllFutureEventsActivity extends AppCompatActivity {
                 }
 
                 mRecyclerView.setAdapter(mAdapter);
+
                 Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
                         Snackbar.LENGTH_LONG)
                         .show();

@@ -20,10 +20,31 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="this week"
+            android:text="next 7 days"
             android:textColor="@color/colorPrimary"
             android:layout_weight="50"
             android:id="@+id/weekBtn"/>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="100"
+        android:gravity="center|bottom">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="next month"
+            android:textColor="@color/colorPrimary"
+            android:layout_weight="50"
+            android:id="@+id/nextMonthBtn"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="all past events"
+            android:textColor="@color/colorPrimary"
+            android:layout_weight="50"
+            android:id="@+id/allPastBtn"/>
     </LinearLayout>
 
     <LinearLayout
@@ -42,7 +63,7 @@
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="all events"
+        android:text="all future events"
         android:textColor="@color/colorPrimary"
         android:layout_weight="50"
         android:id="@+id/allBtn"/>
@@ -51,12 +72,13 @@
     <CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="314dp" />
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:src="@drawable/ic_add_white_24dp"
-        android:layout_margin="16dp" />
+        android:layout_margin="2dp" />
 </LinearLayout>

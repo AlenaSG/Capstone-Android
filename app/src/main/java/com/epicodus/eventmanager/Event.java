@@ -4,7 +4,7 @@ import org.parceler.Parcel;
 
 @Parcel
 public class Event {
-    String eventID;
+    //String eventID;
     String name; //was description
     String type;
 
@@ -13,15 +13,15 @@ public class Event {
     Long millis;
     String address;
     //String link;
-    String pushID;
+    String eventID;
     //String imageURL;
     String  index;//nubers come before strings, will overwrite this string index with numerical index to add new items to end of the list
 
     public Event(){}
 
-    public Event(String eventID, String name, String type, String date, String time, long millis, String address) {
+    public Event(String name, String type, String date, String time, long millis, String address) {
         //(String name, String date, String time, String address, String link, String imageURL)
-        this.eventID = eventID;
+        //this.eventID = eventID;
         this.name = name;
         this.type = type;
         this.date = date;
@@ -89,13 +89,13 @@ public class Event {
         this.address = address;
     }
 
-    public String getPushID() {
-        return pushID;
-    }
-
-    public void setPushID(String pushID) {
-        this.pushID = pushID;
-    }
+//    public String getPushID() {
+//        return pushID;
+//    }
+//
+//    public void setPushID(String pushID) {
+//        this.pushID = pushID;
+//    }
 
     public String getIndex() {
         return index;

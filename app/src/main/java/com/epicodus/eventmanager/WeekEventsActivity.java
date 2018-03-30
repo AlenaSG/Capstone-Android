@@ -21,18 +21,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class AllFutureEventsActivity extends AppCompatActivity {
-    private static final String TAG = "AllFutureEventsActivity";
+
+//https://stackoverflow.com/questions/7654151/how-to-add-7-days-to-current-date-while-not-going-over-available-days-of-a-month
+public class WeekEventsActivity extends AppCompatActivity {
+    private static final String TAG = "WeekEventsActivity";
 
 
     private TextView mTvDateToday;
+    private TextView mTvHowManyEvents;
     private RecyclerView mRecyclerView;
     private EventListAdapter mAdapter;
     private LinearLayoutManager mLayoutManager;
-
-
-    //define view objects
-
 
     public ArrayList<Event> mEvents = new ArrayList<>();
 
@@ -42,27 +41,32 @@ public class AllFutureEventsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_today_events);
-
+        mTvHowManyEvents = (TextView) findViewById(R.id.tvHowManyEvents);
         mTvDateToday = (TextView) findViewById(R.id.tvDateToday);
-
-
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat ss = new SimpleDateFormat("M/dd/yyyy");///or double M
         Date date = new Date();
+
+
+//
+//        Date m = new Date();
+//        Calendar cal = Calendar.getInstance();
+        //calendar.setTime(m);
+         calendar.add(Calendar.DATE, 7); // 7 is the days you want to add or subtract
+        //m = cal.getTime();
+       // System.out.println(m);
+
+
+
         String currentDate = ss.format(date);
         mTvDateToday.setText("Today is " + currentDate);
-        mTvDateToday.setText("All Future Events");
         databaseEvents = FirebaseDatabase.getInstance().getReference("events");
-        // Write a message to the database
-
-        //http://javarevisited.blogspot.com/2012/12/how-to-convert-millisecond-to-date-in-java-example.html
-
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
 
         // Set the properties of the LinearLayoutManager
-        mLayoutManager = new LinearLayoutManager(AllFutureEventsActivity.this);
+        mLayoutManager = new LinearLayoutManager(WeekEventsActivity.this);
         // mLayoutManager.setReverseLayout(true);
         //mLayoutManager.setStackFromEnd(true);
 
@@ -77,16 +81,8 @@ public class AllFutureEventsActivity extends AppCompatActivity {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = user.getUid();
 
-        DatabaseReference databaseEvents = FirebaseDatabase
-                .getInstance()
-                .getReference("events")
-                .child(uid);
 
-        Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").startAt(currentDate);///to display all events - no old ones
-//        Query query = FirebaseDatabase.getInstance()
-//                    .getReference("events")
-//                    .child(uid)
-//                    .orderByChild("millis");
+        Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").equalTo(currentDate);//display todays events
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -100,7 +96,11 @@ public class AllFutureEventsActivity extends AppCompatActivity {
                     mEvents.add(event);
                 }
 
+                if (mEvents.size() == 0) {
+                    mTvHowManyEvents.setText("Nothing is planned for  the next 7 days");
+                }
                 mRecyclerView.setAdapter(mAdapter);
+
                 Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
                         Snackbar.LENGTH_LONG)
                         .show();
@@ -111,5 +111,8 @@ public class AllFutureEventsActivity extends AppCompatActivity {
 
             }
         });
+
+
     }
 }
+
