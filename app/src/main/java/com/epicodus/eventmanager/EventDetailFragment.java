@@ -3,6 +3,7 @@ package com.epicodus.eventmanager;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -108,6 +109,20 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
         mTimeLabel.setText(mEvent.getTime());
         mAddressLabel.setText(mEvent.getAddress());
 
+        String birthday = "Birthday";
+        String show = "Show";
+        //word "class" is taken
+        String other = "Other";
+
+        if (mTypeLabel.getText().equals(birthday)) {
+            mImageLabel.setImageResource(R.drawable.birthday_cupcake);
+        } else if (mTypeLabel.getText().equals(show)) {
+            mImageLabel.setImageResource(R.drawable.show_curtains);
+        }
+        if (mTypeLabel.getText().equals("Class")) {
+            mImageLabel.setImageResource(R.drawable.class_hands);
+        }
+
         mAddressLabel.setOnClickListener(this);
         mAddToCalendarButton.setOnClickListener(this);
 
@@ -156,38 +171,22 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
+
         String eventID = mEvent.getEventID();
-
         if (id == R.id.action_delete) {
-            //showUpdateDialog(eventName);
-            // Toast.makeText(getContext(), "Write some delete code", Toast.LENGTH_SHORT).show();
-            Toast.makeText(getContext(), eventID, Toast.LENGTH_SHORT).show();
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-            String uid = user.getUid();
 
-            DatabaseReference databaseEvents = FirebaseDatabase.getInstance().getReference("events").child(uid).child(eventID);
+            AlertDialog diaBox = AskOption();
+            diaBox.show();
 
-            databaseEvents.removeValue();
-
-            Toast.makeText(getContext(), "Event is deleted", Toast.LENGTH_LONG).show();
-
-
-            ///change to if sourse is .... then go to.....
-            Intent intent = new Intent(getActivity(), CalendarActivity.class);
-            startActivity(intent);
             return true;
         }
         if (id == R.id.action_update) {
-            //showDeleteDialog(eventName);
-            Toast.makeText(getContext(), eventID, Toast.LENGTH_SHORT).show();
             showUpdateDialog(mEvent.getEventID(), mEvent.getName());
-
             return true;
         }
         return super.onOptionsItemSelected(item);
 
     }
-
 
     ////from Stack overflow https://stackoverflow.com/questions/41200876/how-to-set-onitemclicklistener-for-recyclerview
 //        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(this, mRecyclerView, new RecyclerTouchListener.ClickListener() {
@@ -247,8 +246,6 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
     //////update, delete
     private void showUpdateDialog(final String eventID, String eventName) {
 
-       // mEvent.getEventID(), mEvent.getName(), mEvent.getDate(),
-               // mEvent.getTime(), mEvent.getMillis(), mEvent.getType(), mEvent.getAddress()
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.update_dialog, null);
@@ -258,7 +255,6 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
         final EditText etName = (EditText) dialogView.findViewById(R.id.etNewName);
         final TextView tvDate = (TextView) dialogView.findViewById(R.id.tvNewDate);
         final TextView tvTime = (TextView) dialogView.findViewById(R.id.tvNewTime);
-        final TextView tvMillis = (TextView) dialogView.findViewById(R.id.tvNewMillis);
         final EditText etAddress = (EditText) dialogView.findViewById(R.id.etNewAddress);
         final Button btnUpdate = (Button) dialogView.findViewById(R.id.btnUpdate);
         final Spinner spnUpdate = (Spinner) dialogView.findViewById(R.id.spnUpdate);
@@ -270,11 +266,10 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
         etName.setText(mEvent.getName());
         tvDate.setText(mEvent.getDate());
         tvTime.setText(mEvent.getTime());
-        //tvMillis.setHint.(mEvent.getMillis()); //cannot set text to long
         etAddress.setText(mEvent.getAddress());
 
         int index;
-        if (mEvent.getType().equals("Birthday")) {///replace if with switch
+        if (mEvent.getType().equals("Birthday")) {///replace if with switch and values from array Types
             index = 0;
         } else if (mEvent.getType().equals("Show")) {
             index = 1;
@@ -289,8 +284,6 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
 
         final AlertDialog alertDialog = dialogBuilder.create();
         alertDialog.show();
-
-        //String eventid = mEvent.getEventID();
 
         btnSetDateTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -317,8 +310,16 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
                 mNewChosenDate.set(Calendar.HOUR_OF_DAY, hour);
                 mNewChosenDate.set(Calendar.MINUTE, min);
 
-// TODO: 3/2/18 make format - double digit ex. 02:04 not 2:4
-                String timePicked = hour + ":" + min;
+                String timePicked;
+                if (hour < 10 && min < 10) {
+                    timePicked = "0" + hour + ":" + "0" + min;
+                } else if (hour >= 10 && min < 10) {
+                    timePicked = hour + ":" + "0" + min;
+                } else if (hour < 10 && min >= 10) {
+                    timePicked = "0" + hour + ":" + min;
+                } else {
+                    timePicked = hour + ":" + min;
+                }
                 tvTime.setText(timePicked);
 
             }
@@ -336,7 +337,6 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
                 mNewChosenDate.set(Calendar.MONTH, theMonth);
                 mNewChosenDate.set(Calendar.DAY_OF_MONTH, theDay);
 
-                //show timePickerDialog
                 Calendar c = Calendar.getInstance();
                 int min = c.get(Calendar.MINUTE);
                 int hour = c.get(Calendar.HOUR);
@@ -351,8 +351,6 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
             }
         };
 
-
-
         btnUpdate.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -360,16 +358,15 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
             String type = spnUpdate.getSelectedItem().toString();
             String date = tvDate.getText().toString().trim();
             String time = tvTime.getText().toString().trim();
-            long millis = mNewChosenDate.getTimeInMillis(); ///check if millis updated correctly
+            long millis = mNewChosenDate.getTimeInMillis();
             String address = etAddress.getText().toString().trim();
-            //String eventID = mEvent.getEventID();
 
             Log.d(TAG, "AddEvent: current millis=" + millis + ", date=" + date + ", time=" + time);
             android.icu.util.Calendar calendar = android.icu.util.Calendar.getInstance();
             calendar.setTimeInMillis(millis);
             Log.d(TAG, "AddEvent: parsed datetime=" + calendar.getTime().toString());
 
-            if(TextUtils.isEmpty(name)){//add time etc.
+            if(TextUtils.isEmpty(name)){
                 etName.setError("Name is required");
                 return;
             }
@@ -383,7 +380,13 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
         }
     });
 
+        btnDismiss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
 
+            }
+        });
 
     }//show update dialog
 
@@ -394,11 +397,8 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
 
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("events").child(uid).child(id);
         DatabaseReference pushRef = databaseReference.push();
-        //String eventID = pushRef.getKey();
-
 
         Event event = new Event(name, type, date, time, millis, address);
-
 
         event.setEventID(id);
         pushRef.setValue(event);
@@ -409,33 +409,31 @@ public class EventDetailFragment extends Fragment implements View.OnClickListene
 
         return true;
     }
+
+    private AlertDialog AskOption() {
+        AlertDialog myDeletingDialogBox = new AlertDialog.Builder(getActivity())
+                .setMessage("Delete event?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                       //write delete() method
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                        String uid = user.getUid();
+                        String eventID = mEvent.getEventID();
+                        DatabaseReference databaseEvents = FirebaseDatabase.getInstance().getReference("events").child(uid).child(eventID);
+
+                        databaseEvents.removeValue();
+
+                        Toast.makeText(getContext(), "Event is deleted", Toast.LENGTH_LONG).show();
+                        getActivity().finish();//takes you to previous activity
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create();
+        return myDeletingDialogBox;
+    }
 }
-
-
-
-
-
-
-
-//
-//        btnDelete.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                deleteEvent(eventID);
-//                alertDialog.dismiss();
-//            }
-//
-//        });
-//    }
-//
-//    private void deleteEvent(String eventID) {
-//        DatabaseReference drEvent = FirebaseDatabase.getInstance().getReference("events").child(eventID);
-//        DatabaseReference drDetails = FirebaseDatabase.getInstance().getReference("details").child(eventID);
-//
-//        drEvent.removeValue();
-//        drDetails.removeValue();
-//
-//        Toast.makeText(this, "Event is deleted", Toast.LENGTH_LONG).show();
-//    }
-//
-//

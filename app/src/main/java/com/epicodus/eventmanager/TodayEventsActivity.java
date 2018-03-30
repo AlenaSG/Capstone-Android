@@ -303,9 +303,15 @@ public class TodayEventsActivity extends AppCompatActivity {
                 }
                 mRecyclerView.setAdapter(mAdapter);
 
-                Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                if (mEvents.size() == 1)
+                { Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " event found",
                         Snackbar.LENGTH_LONG)
                         .show();
+                } else
+                { Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                        Snackbar.LENGTH_LONG)
+                        .show();
+                }
             }
 
             @Override

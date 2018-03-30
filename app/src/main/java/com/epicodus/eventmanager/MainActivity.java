@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_quotes) {
             fragment = new QuoteFragment();
             Log.d(TAG, "onNavigationItemSelected: this is quotes action");
-            Toast.makeText(this, "You are inside settings fragment", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "You are inside settings fragment", Toast.LENGTH_SHORT).show();
             mBtnCreateEvent.setEnabled(false);
             mBtnFindEvent.setEnabled(false);
     }

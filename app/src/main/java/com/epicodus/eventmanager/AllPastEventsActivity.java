@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,6 +53,10 @@ public class AllPastEventsActivity extends AppCompatActivity {
         String currentDate = ss.format(date);
         mTvDateToday.setText("Today is " + currentDate);
         mTvDateToday.setText("All Past Events");
+
+        long currentMillis = Calendar.getInstance().getTimeInMillis();
+        Log.d(TAG, "onCreate: current millis" + currentMillis);
+
         databaseEvents = FirebaseDatabase.getInstance().getReference("events");
         // Write a message to the database
 
@@ -82,7 +87,7 @@ public class AllPastEventsActivity extends AppCompatActivity {
                 .getReference("events")
                 .child(uid);
 
-        Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").endAt(currentDate);///to display all events - no old ones
+        Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("millis").endAt(currentMillis);///to display all past events
 //        Query query = FirebaseDatabase.getInstance()
 //                    .getReference("events")
 //                    .child(uid)
@@ -102,9 +107,15 @@ public class AllPastEventsActivity extends AppCompatActivity {
 
                 mRecyclerView.setAdapter(mAdapter);
 
-                Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                if (mEvents.size() == 1)
+                { Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " event found",
                         Snackbar.LENGTH_LONG)
                         .show();
+                } else
+                { Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                        Snackbar.LENGTH_LONG)
+                        .show();
+                }
             }
 
             @Override

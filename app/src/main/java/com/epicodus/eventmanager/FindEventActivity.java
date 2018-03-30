@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -84,6 +85,16 @@ public class FindEventActivity extends AppCompatActivity {
                     mTvHowManyEvents.setText("Nothing is planned for this day");
                 }
                 mRecyclerView.setAdapter(mAdapter);
+
+                if (mEvents.size() == 1)
+                { Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " event found",
+                        Snackbar.LENGTH_LONG)
+                        .show();
+                } else
+                { Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                        Snackbar.LENGTH_LONG)
+                        .show();
+                }
             }
 
             @Override

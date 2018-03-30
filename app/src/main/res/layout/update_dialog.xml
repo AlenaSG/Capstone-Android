@@ -49,18 +49,6 @@
         android:layout_margin="2dp"
         android:inputType="textPersonName"/>
 
-    <TextView
-        android:id="@+id/tvNewMillis"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter new millis"
-        android:background="@color/icons"
-        android:ems="10"
-        android:textSize="18sp"
-        android:padding="2dp"
-        android:layout_margin="2dp"
-        android:inputType="number"/>
-
     <EditText
         android:id="@+id/etNewAddress"
         android:layout_width="match_parent"

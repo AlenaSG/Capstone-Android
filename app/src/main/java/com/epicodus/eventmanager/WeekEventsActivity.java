@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,6 +49,11 @@ public class WeekEventsActivity extends AppCompatActivity {
         Date date = new Date();
 
 
+        final long currentMillis = Calendar.getInstance().getTimeInMillis();
+        Log.d(TAG, "onCreate: current millis" + currentMillis);
+        long endMillies = currentMillis + 86400000*7;
+
+
 //
 //        Date m = new Date();
 //        Calendar cal = Calendar.getInstance();
@@ -82,7 +88,7 @@ public class WeekEventsActivity extends AppCompatActivity {
         String uid = user.getUid();
 
 
-        Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("date").equalTo(currentDate);//display todays events
+        Query query = FirebaseDatabase.getInstance().getReference("events").child(uid).orderByChild("millies").endAt(endMillies);//display todays events
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -93,17 +99,25 @@ public class WeekEventsActivity extends AppCompatActivity {
                 for (DataSnapshot eventSnapshot : dataSnapshot.getChildren()) {
                     Event event = eventSnapshot.getValue(Event.class);
 
-                    mEvents.add(event);
-                }
+                    if (event.getMillis() >= currentMillis) {
 
+                        mEvents.add(event);
+                    }
+                }
                 if (mEvents.size() == 0) {
                     mTvHowManyEvents.setText("Nothing is planned for  the next 7 days");
                 }
                 mRecyclerView.setAdapter(mAdapter);
 
-                Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                if (mEvents.size() == 1)
+                { Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " event found",
                         Snackbar.LENGTH_LONG)
                         .show();
+                } else
+                    { Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                            Snackbar.LENGTH_LONG)
+                            .show();
+                    }
             }
 
             @Override

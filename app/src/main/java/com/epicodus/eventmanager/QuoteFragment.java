@@ -92,8 +92,8 @@ public class QuoteFragment extends Fragment {
                 } catch (IOException ioe) {
                     // Do nothing, there may be a network hickup while reading the response.
                 }
-                final String final_text = text == null ? "My funny default quote" : text;
-                final String final_author = text == null ? "Me" : author;
+                final String final_text = text == null ? "Not all who wander are lost" : text;
+                final String final_author = text == null ? "J. R. R. Tolkien" : author;
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

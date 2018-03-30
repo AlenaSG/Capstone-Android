@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:id="@+id/nav_account"
-        android:icon="@drawable/ic_person_white_24dp"
+        android:icon="@drawable/ic_info_white_24dp"
         android:title="About the App" />
 
     <item android:id="@+id/nav_settings"

@@ -119,8 +119,17 @@ public class CreateEventActivity extends AppCompatActivity {
                 mChosenDate.set(Calendar.HOUR_OF_DAY, hour);
                 mChosenDate.set(Calendar.MINUTE, min);
 
-// TODO: 3/2/18 make format - double digit ex. 02:04 not 2:4
-                String timePicked = hour + ":" + min;
+                String timePicked;
+                if (hour < 10 && min < 10) {
+                    timePicked = "0" + hour + ":" + "0" + min;
+                } else if (hour >= 10 && min < 10) {
+                    timePicked = hour + ":" + "0" + min;
+                } else if (hour < 10 && min >= 10) {
+                    timePicked = "0" + hour + ":" + min;
+                } else {
+                    timePicked = hour + ":" + min;
+                }
+
                 mTheTime.setText(timePicked);
 
             }
@@ -172,7 +181,12 @@ public class CreateEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 AddEvent();
+                mNameET.setHint("Event Name");//why it doesn't work?
+                mAddressET.setHint("Event Address");
+                mTheDate.setHint("Event Date");
+                mTheTime.setHint("Event Time");
             }
+
         });
 
 //
@@ -241,7 +255,10 @@ public class CreateEventActivity extends AppCompatActivity {
             event.setEventID(eventID);
             pushRef.setValue(event);
 
-            //pushRef.setValue(event);
+            //mNameET.setHint("Event Name");
+//            mAddressET.setHint("Event Address");
+//            mTheDate.setHint("Event Date");
+//            mTheTime.setHint("Event Time");
 
             Toast.makeText(this, "event added", Toast.LENGTH_LONG).show();
 
@@ -267,6 +284,7 @@ public class CreateEventActivity extends AppCompatActivity {
                 }
 
                 mRecyclerView.setAdapter(mAdapter);
+
             }
 
             @Override

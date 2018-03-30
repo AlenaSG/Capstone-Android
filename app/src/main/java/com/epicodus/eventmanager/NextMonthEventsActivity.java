@@ -54,7 +54,8 @@ public class NextMonthEventsActivity extends AppCompatActivity {
         Date date = new Date();
         String currentDate = ss.format(date);
         final int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        mTvDateToday.setText("Today is " + currentDate + "\n" + "Events for "+ (nextMonthDigit+1) + ", " + currentYear);
+        //mTvDateToday.setText("Today is " + currentDate + "\n" + "Events for "+ (nextMonthDigit+1) + ", " + currentYear);
+        mTvDateToday.setText("Today is " + currentDate + "\n" + "Events for "+ "April" + ", " + currentYear);//hard coded for now - make an array of months?
         //databaseEvents = FirebaseDatabase.getInstance().getReference("events");
         databaseEvents = FirebaseDatabase.getInstance().getReference();
         // Write a message to the database
@@ -104,15 +105,21 @@ public class NextMonthEventsActivity extends AppCompatActivity {
                         mEvents.add(event);
                     }
                     if (mEvents.size() == 0) {/////WHY DOES IT SHOW??
-                        mTvHowManyEvents.setText("Nothing is planned for next month, " + (nextMonthDigit+1));
+                       // mTvHowManyEvents.setText("Nothing is planned for next month, " + (nextMonthDigit+1));
                     }
                 }
 
                 mRecyclerView.setAdapter(mAdapter);
 
-                Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                if (mEvents.size() == 1)
+                { Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " event found",
                         Snackbar.LENGTH_LONG)
                         .show();
+                } else
+                { Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                        Snackbar.LENGTH_LONG)
+                        .show();
+                }
             }
 
             @Override

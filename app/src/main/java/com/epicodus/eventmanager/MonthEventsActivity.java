@@ -44,7 +44,7 @@ public class MonthEventsActivity extends AppCompatActivity implements SensorEven
     private Sensor mSensor;
     private long lastUpdate = 0;
     private float last_x, last_y, last_z;
-    private static final int SHAKE_THRESHOLD = 500;
+    private static final int SHAKE_THRESHOLD = 100000; //was 500
 
 
     public ArrayList<Event> mEvents = new ArrayList<>();
@@ -121,9 +121,16 @@ public class MonthEventsActivity extends AppCompatActivity implements SensorEven
                 }
 
                 mRecyclerView.setAdapter(mAdapter);
-                Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                if (mEvents.size() == 1)
+                { Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " event found",
                         Snackbar.LENGTH_LONG)
                         .show();
+                }
+                else {
+                    Snackbar.make(findViewById(R.id.myLinearLayout), mEvents.size() + " events found",
+                        Snackbar.LENGTH_LONG)
+                        .show();
+                }
             }
 
             @Override
