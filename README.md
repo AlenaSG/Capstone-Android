@@ -1,5 +1,5 @@
-# Capstone-Android/KidsAndMe - In Progress
-by Alena Golovina, September 2017
+# Capstone-Android/KidsAndMe 
+by Alena Golovina, September, 2017
 
 ## DESCRIPTION
 This is a capstone project for the Epicodus Android Developer course.
